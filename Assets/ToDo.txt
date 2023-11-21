@@ -1,0 +1,13 @@
+Videos usados como base para construir o jogo (na ordem de uso):
+
+Rodrigo:
+	https://www.youtube.com/watch?v=_1pz_ohupPs
+Moura:
+Veiga:
+Juan:
+
+1. Sistema de ordem dos personagens
+2. Sistema de corrente
+3. Configurar status dos personagens e boss
+4. Configurar botões e sliders na tela
+5. botar para a vida total ser igual a vida dos 4/4, só que o boss não vai atacar individualmente.
