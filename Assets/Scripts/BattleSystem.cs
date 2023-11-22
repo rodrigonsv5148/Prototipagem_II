@@ -30,13 +30,14 @@ public class BattleSystem : MonoBehaviour
     Unit teamUnit;
 
     public UILife playerLife;
+    public UILife enemyLife;
 
-	public bool buttonFire = false;
+    public bool buttonFire = false;
 	public bool buttonEarth = false;
 	public bool buttonAir = false;
 	public bool buttonWater = false;
     
-	public int attackUnion = 0;
+	private int attackUnion = 0;
 
 	public int magia = 10;
 
@@ -66,33 +67,75 @@ public class BattleSystem : MonoBehaviour
         teamUnit = team.GetComponent<Unit>();
 
         playerLife.SetHud(teamUnit);
+		enemyLife.SetHud(enemyUnit);
 
 		yield return new WaitForSeconds (1f);
 
 		state = battleState.playerTurn;
-		playerTurn ();
-
+		PlayerTurn();
     }
 
 	IEnumerator PlayerAttack()
 	{
 
-		bool morreu = enemyUnit.takeDamage(magia)
+		bool morreu = enemyUnit.takeDamage (magia);
 
 		yield return new WaitForSeconds (1f);
 
-		if(morreu)
+        /*setar o HP do inimigo*/
+		enemyLife.SetHP(enemyUnit.atualHP);
+
+        if (morreu)
 		{
-			
+			state = battleState.won;
+			EndBattle ();
 		}else
 		{
-			
+			state = battleState.enemyTurn;
+			StartCoroutine (EnemyTurn());
 		}
 
 		//resetar as variáveis e os botões da UI
 	}
 
-	void playerTurn ()
+	IEnumerator EnemyTurn() 
+	{
+		yield return new WaitForSeconds(1f);
+
+		bool playerMorreu = teamUnit.takeDamage(enemyUnit.damageBase);
+
+        playerLife.setHP(teamUnit.atualHP);
+
+        yield return new WaitForSeconds(1f);
+
+		//aqui embaixo q eu posso botar para gerar um numero aleatório baseado em quantos focaram a magia para realizar o ataque
+
+		if (playerMorreu) 
+		{
+			state = battleState.lost;
+			EndBattle();
+
+        }
+		else 
+		{
+            state = battleState.playerTurn;
+			EndBattle();
+        }
+
+    }
+
+	void EndBattle()
+	{
+		if (state == battleState.won) {
+			//O que acontece se ganhar?
+			print ("ganhei");
+		} else 
+		{
+			print ("no ceu tem pao?");
+		}
+	}
+
+	void PlayerTurn ()
 	{
 		
 	}
