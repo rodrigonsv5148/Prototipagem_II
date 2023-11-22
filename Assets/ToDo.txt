@@ -12,3 +12,4 @@ magias dano switch
 3. Configurar status dos personagens e boss
 4. Configurar botões e sliders na tela
 5. botar para a vida total ser igual a vida dos 4/4, só que o boss não vai atacar individualmente.
+6. animar texto de dano

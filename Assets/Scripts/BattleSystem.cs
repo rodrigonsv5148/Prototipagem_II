@@ -49,11 +49,14 @@ public class BattleSystem : MonoBehaviour
 
 	Vector3 position = new Vector3 (0f, 0.8f, 0f);
 
+	private float multiplosAtaques = 0.0f;
+	private float fatorDeQueda = 0.0f;
+
 	void Start()
     {
         state = battleState.start;
 		StartCoroutine(SetupBattle());
-
+		//iniciar musica de fundo -------------------------------------------------------------------------------------------------------------------------------------------------------------
     }
 
 	IEnumerator SetupBattle() 
@@ -86,6 +89,59 @@ public class BattleSystem : MonoBehaviour
 
 	IEnumerator PlayerAttack()
 	{
+		//Selecionador de magias
+		switch(attackUnion)
+		{
+			// Para todas as magias add efeito de som e animações-------------------------------------------------------------------------------------------------------------------
+			case 1:
+				magia = 9;
+				break;
+			case 2:
+				magia = 12;
+				break;
+			case 4:
+				magia = 6;
+				break;
+			case 8:
+				magia = 10;
+				break;
+			//--------------------------------
+			case 3:
+				magia = 21;
+				break;
+			case 5:
+				magia = 15;
+				break;
+			case 9:
+				magia = 13;
+				break;
+			case 6:
+				magia = 11;
+				break;
+			case 10:
+				magia = 14;
+				break;
+			case 12:
+				magia = 15;
+				break;
+            //------------------------------
+            case 7:
+				magia = 25;
+				break;
+			case 11:
+				magia = 20;
+				break;
+			case 13:
+				magia = 22;
+				break;
+			case 14:
+				magia = 19;
+				break;
+			//----------------------------
+			case 15:
+				magia = 30;
+				break;
+		}
 
 		bool morreu = enemyUnit.takeDamage (magia);
 
@@ -100,50 +156,66 @@ public class BattleSystem : MonoBehaviour
 			state = battleState.enemyTurn;
 			StartCoroutine (EnemyTurn ());
 		}
-			
-		//Resetando botões para poder serem ativados no próximo turno
-		attackUnion = 0;
-		fireButton.isOn = false;
-		earthButton.isOn = false;
-		airButton.isOn = false;
-		waterButton.isOn = false;
-
-		}
+	}
 
 	IEnumerator EnemyTurn() 
 	{
 		yield return new WaitForSeconds(1f);
 
 		bool playerMorreu = teamUnit.takeDamage(enemyUnit.damageBase);
-
+		print("besta Ataca");
+		// Adicionar som de ataque ------------------------------------------------------------------------------------
         playerLife.setHP(teamUnit.atualHP);
 
         yield return new WaitForSeconds(1f);
 
-		//aqui embaixo q eu posso botar para gerar um numero aleatório baseado em quantos focaram a magia para realizar o ataque
+		// Codigo de multiplos ataques
+		multiplosAtaques = (Random.value * attackUnion) - fatorDeQueda;
+		print(multiplosAtaques);
+		
+		fireButton.isOn = false;
+		earthButton.isOn = false;
+		airButton.isOn = false;
+		waterButton.isOn = false;
+		//Resetando botões para poder serem ativados no próximo turno
+		attackUnion = 0;
 
 		if (playerMorreu) 
 		{
 			state = battleState.lost;
 			EndBattle();
-
+            
         }
-		else 
+        else if(multiplosAtaques <= 4.5f && playerMorreu == false)
 		{
             state = battleState.playerTurn;
-			EndBattle();
-        }
+			//EndBattle();
+			fatorDeQueda = 0;
+			print("vez do player");
 
+        }else if(multiplosAtaques > 4.5f && playerMorreu == false)
+		{
+			state = battleState.enemyTurn;
+			fatorDeQueda++;
+			segundoAtaque();
+		}
     }
+	
+	void segundoAtaque ()
+	{
+		StartCoroutine (EnemyTurn ());	
+	}
 
 	void EndBattle()
 	{
 		if (state == battleState.won) {
-			//O que acontece se ganhar?
-			print ("ganhei");
+            //adicionar som de end game, dar load no menu--------------------------------------------------
+            print("ganhei");
 		} else 
 		{
-			print ("no ceu tem pao?");
+            //adicionar som de vitória, dar load na fase--------------------------------------------------
+            //O que acontece se perder?
+            print("no ceu tem pao?");
 		}
 	}
 
@@ -164,31 +236,30 @@ public class BattleSystem : MonoBehaviour
 
 	public void OnFireButton()
 	{
+
+		//Em todos, botar som do elemento e mudar o sprite quando ativar, e som de magia se dissipando quando desativar------------------------------------------------------------------
 		if (buttonFire == false) {
 			mage1Location.position = (mage1Location.position + position);
-			attackUnion = attackUnion + 1;
-
+			attackUnion++;
 			buttonFire = true;
 		} else 
 		{
 			mage1Location.position = (mage1Location.position - position);
-			attackUnion = attackUnion - 1;
+			attackUnion--;
 			buttonFire = false;
-
 		}
-		print (attackUnion);
 	}
 
 	public void OnEarthButton()
 	{
 		if (buttonEarth == false) {
 			mage2Location.position = (mage2Location.position + position);
-			attackUnion = attackUnion + 2;
+			attackUnion += 2;
 			buttonEarth = true;
 		} else 
 		{
 			mage2Location.position = (mage2Location.position - position);
-			attackUnion = attackUnion - 2;
+			attackUnion -= 2;
 			buttonEarth = false;
 		}
 	}
@@ -197,25 +268,26 @@ public class BattleSystem : MonoBehaviour
 	{
 		if (buttonAir == false) {
 			mage3Location.position = (mage3Location.position + position);
-			attackUnion = attackUnion + 4;
+			attackUnion += 4;
 			buttonAir = true;
 		} else 
 		{
 			mage3Location.position = (mage3Location.position - position);
-			attackUnion = attackUnion - 4;
+			attackUnion -= 4;
 			buttonAir = false;
 		}
 	}
+
 	public void OnWaterButton()
 	{
 		if (buttonWater == false) {
 			mage4Location.position = (mage4Location.position + position);
-			attackUnion = attackUnion + 8;
+			attackUnion += 8;
 			buttonWater = true;
 		} else 
 		{
 			mage4Location.position = (mage4Location.position - position);
-			attackUnion = attackUnion - 8;
+			attackUnion -= 8;
 			buttonWater = false;
 		}
 	}
