@@ -3,6 +3,7 @@ using System.Collections.Generic;
 //using Unity.VisualScripting;
 using UnityEngine;
 using static UnityEngine.UI.CanvasScaler;
+using UnityEngine.UI;
 
 public enum battleState { start, playerTurn, enemyTurn, won, lost };
 public class BattleSystem : MonoBehaviour
@@ -41,10 +42,18 @@ public class BattleSystem : MonoBehaviour
 
 	public int magia = 10;
 
+	public Toggle fireButton;
+	public Toggle earthButton;
+	public Toggle airButton;
+	public Toggle waterButton;
+
+	Vector3 position = new Vector3 (0f, 0.8f, 0f);
+
 	void Start()
     {
         state = battleState.start;
 		StartCoroutine(SetupBattle());
+
     }
 
 	IEnumerator SetupBattle() 
@@ -82,21 +91,24 @@ public class BattleSystem : MonoBehaviour
 
 		yield return new WaitForSeconds (1f);
 
-        /*setar o HP do inimigo*/
-		enemyLife.SetHP(enemyUnit.atualHP);
+		enemyLife.setHP (enemyUnit.atualHP);
 
-        if (morreu)
-		{
+		if (morreu) {
 			state = battleState.won;
 			EndBattle ();
-		}else
-		{
+		} else {
 			state = battleState.enemyTurn;
-			StartCoroutine (EnemyTurn());
+			StartCoroutine (EnemyTurn ());
 		}
+			
+		//Resetando botões para poder serem ativados no próximo turno
+		attackUnion = 0;
+		fireButton.isOn = false;
+		earthButton.isOn = false;
+		airButton.isOn = false;
+		waterButton.isOn = false;
 
-		//resetar as variáveis e os botões da UI
-	}
+		}
 
 	IEnumerator EnemyTurn() 
 	{
@@ -153,10 +165,13 @@ public class BattleSystem : MonoBehaviour
 	public void OnFireButton()
 	{
 		if (buttonFire == false) {
+			mage1Location.position = (mage1Location.position + position);
 			attackUnion = attackUnion + 1;
+
 			buttonFire = true;
 		} else 
 		{
+			mage1Location.position = (mage1Location.position - position);
 			attackUnion = attackUnion - 1;
 			buttonFire = false;
 
@@ -167,10 +182,12 @@ public class BattleSystem : MonoBehaviour
 	public void OnEarthButton()
 	{
 		if (buttonEarth == false) {
+			mage2Location.position = (mage2Location.position + position);
 			attackUnion = attackUnion + 2;
 			buttonEarth = true;
 		} else 
 		{
+			mage2Location.position = (mage2Location.position - position);
 			attackUnion = attackUnion - 2;
 			buttonEarth = false;
 		}
@@ -179,10 +196,12 @@ public class BattleSystem : MonoBehaviour
 	public void OnAirButton()
 	{
 		if (buttonAir == false) {
+			mage3Location.position = (mage3Location.position + position);
 			attackUnion = attackUnion + 4;
 			buttonAir = true;
 		} else 
 		{
+			mage3Location.position = (mage3Location.position - position);
 			attackUnion = attackUnion - 4;
 			buttonAir = false;
 		}
@@ -190,10 +209,12 @@ public class BattleSystem : MonoBehaviour
 	public void OnWaterButton()
 	{
 		if (buttonWater == false) {
+			mage4Location.position = (mage4Location.position + position);
 			attackUnion = attackUnion + 8;
 			buttonWater = true;
 		} else 
 		{
+			mage4Location.position = (mage4Location.position - position);
 			attackUnion = attackUnion - 8;
 			buttonWater = false;
 		}
