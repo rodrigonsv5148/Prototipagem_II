@@ -7,9 +7,14 @@ public class UILife : MonoBehaviour
 {
     public Slider Hp;
 
-    public void SetHud(unit unit) 
+	public void SetHud(Unit unit) 
     {
-        Hp.maxValue = unit.maxHP;
-        Hp.value = unit.atualHP;
+		Hp.maxValue = unit.maxHP;
+		Hp.value = unit.atualHP;
     }
+
+	public void setHP(int hp)
+	{
+		Hp.value = hp;
+	}
 }

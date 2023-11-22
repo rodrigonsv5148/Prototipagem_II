@@ -31,13 +31,22 @@ public class BattleSystem : MonoBehaviour
 
     public UILife playerLife;
 
-    void Start()
+	public bool buttonFire = false;
+	public bool buttonEarth = false;
+	public bool buttonAir = false;
+	public bool buttonWater = false;
+    
+	public int attackUnion = 0;
+
+	public int magia = 10;
+
+	void Start()
     {
         state = battleState.start;
-        SetupBattle();
+		StartCoroutine(SetupBattle());
     }
 
-    void SetupBattle() 
+	IEnumerator SetupBattle() 
     {
         GameObject fireMage = Instantiate(playerFirePrefab, mage1Location);
         playerFireUnit = fireMage.GetComponent<Unit>();
@@ -57,6 +66,93 @@ public class BattleSystem : MonoBehaviour
         teamUnit = team.GetComponent<Unit>();
 
         playerLife.SetHud(teamUnit);
+
+		yield return new WaitForSeconds (1f);
+
+		state = battleState.playerTurn;
+		playerTurn ();
+
     }
 
+	IEnumerator PlayerAttack()
+	{
+
+		bool morreu = enemyUnit.takeDamage(magia)
+
+		yield return new WaitForSeconds (1f);
+
+		if(morreu)
+		{
+			
+		}else
+		{
+			
+		}
+
+		//resetar as variáveis e os botões da UI
+	}
+
+	void playerTurn ()
+	{
+		
+	}
+
+	public void OnAttackButton ()
+	{
+		if (state != battleState.playerTurn) 
+		{
+			return;
+		}
+
+		StartCoroutine (PlayerAttack ());
+	}
+
+	public void OnFireButton()
+	{
+		if (buttonFire == false) {
+			attackUnion = attackUnion + 1;
+			buttonFire = true;
+		} else 
+		{
+			attackUnion = attackUnion - 1;
+			buttonFire = false;
+
+		}
+		print (attackUnion);
+	}
+
+	public void OnEarthButton()
+	{
+		if (buttonEarth == false) {
+			attackUnion = attackUnion + 2;
+			buttonEarth = true;
+		} else 
+		{
+			attackUnion = attackUnion - 2;
+			buttonEarth = false;
+		}
+	}
+
+	public void OnAirButton()
+	{
+		if (buttonAir == false) {
+			attackUnion = attackUnion + 4;
+			buttonAir = true;
+		} else 
+		{
+			attackUnion = attackUnion - 4;
+			buttonAir = false;
+		}
+	}
+	public void OnWaterButton()
+	{
+		if (buttonWater == false) {
+			attackUnion = attackUnion + 8;
+			buttonWater = true;
+		} else 
+		{
+			attackUnion = attackUnion - 8;
+			buttonWater = false;
+		}
+	}
 }

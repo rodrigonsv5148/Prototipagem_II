@@ -6,6 +6,7 @@ Moura:
 Veiga:
 Juan:
 
+magias dano switch
 1. Sistema de ordem dos personagens
 2. Sistema de corrente
 3. Configurar status dos personagens e boss

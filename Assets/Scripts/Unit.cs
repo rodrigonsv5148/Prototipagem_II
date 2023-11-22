@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Unity : MonoBehaviour
+public class Unit : MonoBehaviour
 {
     public string unitName;
 
@@ -16,6 +16,15 @@ public class Unity : MonoBehaviour
     public int energyperturn;
     public int energizeActive;
 
+	public bool takeDamage (int dmg)
+	{
+		atualHP -= dmg;
 
+		if (atualHP <= 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 
 }
