@@ -92,7 +92,7 @@ public class BattleSystem : MonoBehaviour
 		//Selecionador de magias
 		switch(attackUnion)
 		{
-			// Para todas as magias add efeito de som e animações-------------------------------------------------------------------------------------------------------------------
+			// Para todas as magias add efeito de som e animações, e textos-------------------------------------------------------------------------------------------------------
 			case 1:
 				magia = 9;
 				break;
@@ -189,9 +189,7 @@ public class BattleSystem : MonoBehaviour
         else if(multiplosAtaques <= 4.5f && playerMorreu == false)
 		{
             state = battleState.playerTurn;
-			//EndBattle();
 			fatorDeQueda = 0;
-			print("vez do player");
 
         }else if(multiplosAtaques > 4.5f && playerMorreu == false)
 		{
@@ -210,6 +208,7 @@ public class BattleSystem : MonoBehaviour
 	{
 		if (state == battleState.won) {
             //adicionar som de end game, dar load no menu--------------------------------------------------
+
             print("ganhei");
 		} else 
 		{
