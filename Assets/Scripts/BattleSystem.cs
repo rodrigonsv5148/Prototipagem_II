@@ -88,6 +88,23 @@ public class BattleSystem : MonoBehaviour
     public GameObject looseText;
 
     public float tempoDeAnimacao = 1.0f;
+
+    public int danoAtkFogo = 9;
+    public int danoAtkTerra = 12;
+    public int danoAtkAr = 6;
+    public int danoAtkAgua = 10;
+    public int danoAtkMagma = 21;
+    public int danoAtkFumaca = 5;
+    public int danoAtkVapor = 13;
+    public int danoAtkAreia = 11;
+    public int danoAtkPlanta = 14;
+    public int danoAtkGelo = 15;
+    public int danoAtkGasVucanico = 20;
+    public int danoAtkObsidiana = 25;
+    public int danoAtkChuvaAcida = 10;
+    public int danoAtkSalitre = 19;
+    public int danoAtkEter = 30;
+
     void Start()
     {
         state = battleState.start;
@@ -98,16 +115,16 @@ public class BattleSystem : MonoBehaviour
 	IEnumerator SetupBattle() 
     {
         GameObject fireMage = Instantiate(playerFirePrefab, mage1Location);
-        playerFireUnit = fireMage.GetComponent<Unit>();
+        //playerFireUnit = fireMage.GetComponent<Unit>();
 
         GameObject earthMage = Instantiate(playerEarthPrefab, mage2Location);
-        playerEarthUnit = earthMage.GetComponent<Unit>();
+        //playerEarthUnit = earthMage.GetComponent<Unit>();
 
         GameObject airMage = Instantiate(playerAirPrefab, mage3Location);
-        playerAirUnit = airMage.GetComponent<Unit>();
+        //playerAirUnit = airMage.GetComponent<Unit>();
 
         GameObject waterMage = Instantiate(playerWaterPrefab, mage4Location);
-        playerWaterUnit = waterMage.GetComponent<Unit>();
+        //playerWaterUnit = waterMage.GetComponent<Unit>();
 
         enemy = Instantiate(enemyPrefab, enemyLocation);
         enemyUnit = enemy.GetComponent<Unit>();
@@ -133,7 +150,7 @@ public class BattleSystem : MonoBehaviour
 		{
             // Para todas as magias, add efeito de som e animações, e arrumar tempos de duração-------------------------------------------------------------------------------------------------------
             case 1:
-				magia = 9;
+				magia = danoAtkFogo;
                 Attack = Instantiate(fireAttackPrefab, spawnAttackLocation1);
                 Animator animator = Attack.GetComponent<Animator>();
                 animator.Play("FireAttack");
@@ -144,7 +161,7 @@ public class BattleSystem : MonoBehaviour
                 break;
 
 			case 2:
-				magia = 12;
+				magia = danoAtkTerra;
                 Attack = Instantiate(EarthAttackPrefab, spawnAttackLocation1);
                 //Animator animator = Attack.GetComponent<Animator>();
                 //animator.Play("FireAttack");
@@ -156,7 +173,7 @@ public class BattleSystem : MonoBehaviour
                 break;
 
 			case 4:
-                magia = 6;
+                magia = danoAtkAr;
                 Attack = Instantiate(AirAttackPrefab, spawnAttackLocation1);//Talvez configurar dependendo de onde venha o ataque, se ele cair no inimigo
                 //Animator animator = Attack.GetComponent<Animator>();
                 //animator.Play("FireAttack");
@@ -168,7 +185,7 @@ public class BattleSystem : MonoBehaviour
                 break;
 			case 8:
                 
-                magia = 10;
+                magia = danoAtkAgua;
                 Attack = Instantiate(waterAttackPrefab, spawnAttackLocation1);//Talvez configurar dependendo de onde venha o ataque, se ele cair no inimigo
                 //Animator animator = Attack.GetComponent<Animator>();
                 //animator.Play("FireAttack");
@@ -180,7 +197,7 @@ public class BattleSystem : MonoBehaviour
                 break;
 			//--------------------------------
 			case 3:
-				magia = 21;
+				magia = danoAtkMagma;
                 Attack = Instantiate(magmaAttackPrefab, spawnAttackLocation1);//Talvez configurar dependendo de onde venha o ataque, se ele cair no inimigo
                 //Animator animator = Attack.GetComponent<Animator>();
                 //animator.Play("FireAttack");
@@ -191,7 +208,7 @@ public class BattleSystem : MonoBehaviour
                 nomeDoAttack = "Magma";
                 break;
 			case 5:
-				magia = 3;
+				magia = danoAtkFumaca;
                 Attack = Instantiate(smokeAttackPrefab, spawnAttackLocation1);//Talvez configurar dependendo de onde venha o ataque, se ele cair no inimigo
                 //Animator animator = Attack.GetComponent<Animator>();
                 //animator.Play("FireAttack");
@@ -202,7 +219,7 @@ public class BattleSystem : MonoBehaviour
                 nomeDoAttack = "Fumaça";
                 break;
 			case 9:
-				magia = 13;
+				magia = danoAtkVapor;
                 Attack = Instantiate(vaporAttackPrefab, spawnAttackLocation1);//Talvez configurar dependendo de onde venha o ataque, se ele cair no inimigo
                 //Animator animator = Attack.GetComponent<Animator>();
                 //animator.Play("FireAttack");
@@ -213,7 +230,7 @@ public class BattleSystem : MonoBehaviour
                 nomeDoAttack = "Vapor";
                 break;
 			case 6:
-				magia = 11;
+				magia = danoAtkAreia;
                 Attack = Instantiate(areiaAttackPrefab, spawnAttackLocation1);//Talvez configurar dependendo de onde venha o ataque, se ele cair no inimigo
                 //Animator animator = Attack.GetComponent<Animator>();
                 //animator.Play("FireAttack");
@@ -224,7 +241,7 @@ public class BattleSystem : MonoBehaviour
                 nomeDoAttack = "Areia";
                 break;
 			case 10:
-				magia = 14;
+				magia = danoAtkPlanta;
                 Attack = Instantiate(plantaAttackPrefab, spawnAttackLocation1);//Talvez configurar dependendo de onde venha o ataque, se ele cair no inimigo
                 //Animator animator = Attack.GetComponent<Animator>();
                 //animator.Play("FireAttack");
@@ -235,7 +252,7 @@ public class BattleSystem : MonoBehaviour
                 nomeDoAttack = "Planta";
                 break;
 			case 12:
-				magia = 15;
+				magia = danoAtkGelo;
                 Attack = Instantiate(geloAttackPrefab, spawnAttackLocation1);//Talvez configurar dependendo de onde venha o ataque, se ele cair no inimigo
                 //Animator animator = Attack.GetComponent<Animator>();
                 //animator.Play("FireAttack");
@@ -247,7 +264,7 @@ public class BattleSystem : MonoBehaviour
                 break;
             //------------------------------
             case 7:
-				magia = 20;
+				magia = danoAtkGasVucanico;
                 Attack = Instantiate(gasVulcanicoAttackPrefab, spawnAttackLocation1);//Talvez configurar dependendo de onde venha o ataque, se ele cair no inimigo
                 //Animator animator = Attack.GetComponent<Animator>();
                 //animator.Play("FireAttack");
@@ -258,7 +275,7 @@ public class BattleSystem : MonoBehaviour
                 nomeDoAttack = "Gás Vulcânico (Que é toxico)";
                 break;
 			case 11:
-				magia = 25;
+				magia = danoAtkObsidiana;
                 Attack = Instantiate(obsidianaAttackPrefab, spawnAttackLocation1);//Talvez configurar dependendo de onde venha o ataque, se ele cair no inimigo
                 //Animator animator = Attack.GetComponent<Animator>();
                 //animator.Play("FireAttack");
@@ -269,7 +286,7 @@ public class BattleSystem : MonoBehaviour
                 nomeDoAttack = "Obsidiana";
                 break;
 			case 13:
-				magia = 10;
+				magia = danoAtkChuvaAcida;
                 Attack = Instantiate(chuvaAcidaAttackPrefab, spawnAttackLocation1);//Talvez configurar dependendo de onde venha o ataque, se ele cair no inimigo
                 //Animator animator = Attack.GetComponent<Animator>();
                 //animator.Play("FireAttack");
@@ -280,7 +297,7 @@ public class BattleSystem : MonoBehaviour
                 nomeDoAttack = "Chuva ácida";
                 break;
 			case 14:
-				magia = 19;
+				magia = danoAtkSalitre;
                 Attack = Instantiate(salitreAttackPrefab, spawnAttackLocation1);//Talvez configurar dependendo de onde venha o ataque, se ele cair no inimigo
                 //Animator animator = Attack.GetComponent<Animator>();
                 //animator.Play("FireAttack");
@@ -292,7 +309,7 @@ public class BattleSystem : MonoBehaviour
                 break;
 			//----------------------------
 			case 15:
-				magia = 30;
+				magia = danoAtkEter;
                 Attack = Instantiate(eterAttackPrefab, spawnAttackLocation1);//Talvez configurar dependendo de onde venha o ataque, se ele cair no inimigo
                 //Animator animator = Attack.GetComponent<Animator>();
                 //animator.Play("FireAttack");
@@ -393,10 +410,7 @@ public class BattleSystem : MonoBehaviour
 		}
 	}
 
-	void PlayerTurn ()
-	{
-		
-	}
+	void PlayerTurn (){}
 
 	public void OnAttackButton ()
 	{
@@ -406,7 +420,6 @@ public class BattleSystem : MonoBehaviour
             {
                 return;
             }
-
             StartCoroutine(PlayerAttack());
         }
         else 
