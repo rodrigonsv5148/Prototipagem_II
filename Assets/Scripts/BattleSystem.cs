@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using static UnityEngine.UI.CanvasScaler;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+using UnityEditor.SearchService;
+
 
 public enum battleState { start, playerTurn, enemyTurn, won, lost };
 public class BattleSystem : MonoBehaviour
@@ -365,12 +368,20 @@ public class BattleSystem : MonoBehaviour
 	{
 		if (state == battleState.won) {
             //adicionar som de end game, dar load no menu--------------------------------------------------
-
+            
+            // O que acontece se perder?
+            // musica de vitória
+            // esperar um tempo antes do load
+            SceneManager.LoadScene("Level_1");
             print("ganhei");
 		} else 
 		{
             //adicionar som de vitória, dar load na fase--------------------------------------------------
+
             //O que acontece se perder?
+            // musica de vitória
+            // esperar um tempo antes do load
+            SceneManager.LoadScene("Menu");
             print("no ceu tem pao?");
 		}
 	}
