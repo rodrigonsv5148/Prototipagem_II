@@ -9,3 +9,8 @@ Juan:
 
 6. animar texto de dano
 7. musica de idle
+8. fazer instrucoes
+9. portal como start
+10. botar segunda criatura
+11. Os dois, quando derrotar a criatura, ganha item de cada item, precisa do item p abrir o portal
+12. naufragos querem voltar p casa, usar o portal.

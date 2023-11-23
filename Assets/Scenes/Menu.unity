@@ -1167,7 +1167,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e444320e32d06874b863fd5ae28ce3bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scene: Level_1
+  scene: BattleScene
   menuP: {fileID: 1007302453}
   menuI: {fileID: 1707554618}
 --- !u!4 &1546262947

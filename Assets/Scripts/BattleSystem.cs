@@ -79,7 +79,13 @@ public class BattleSystem : MonoBehaviour
 
     public GameObject fakeAttack;
 
-
+    public GameObject enemy;
+    public GameObject fireMage;
+    public GameObject earthMage;
+    public GameObject airMage;
+    public GameObject waterMage;
+    public GameObject winText;
+    public GameObject looseText;
 
     public float tempoDeAnimacao = 1.0f;
     void Start()
@@ -103,7 +109,7 @@ public class BattleSystem : MonoBehaviour
         GameObject waterMage = Instantiate(playerWaterPrefab, mage4Location);
         playerWaterUnit = waterMage.GetComponent<Unit>();
 
-        GameObject enemy = Instantiate(enemyPrefab, enemyLocation);
+        enemy = Instantiate(enemyPrefab, enemyLocation);
         enemyUnit = enemy.GetComponent<Unit>();
 
         teamUnit = team.GetComponent<Unit>();
@@ -125,7 +131,7 @@ public class BattleSystem : MonoBehaviour
         //Selecionador de magias
         switch (attackUnion)
 		{
-            // Para todas as magias add efeito de som e animações, e arrumar tempos-------------------------------------------------------------------------------------------------------
+            // Para todas as magias, add efeito de som e animações, e arrumar tempos de duração-------------------------------------------------------------------------------------------------------
             case 1:
 				magia = 9;
                 Attack = Instantiate(fireAttackPrefab, spawnAttackLocation1);
@@ -308,7 +314,7 @@ public class BattleSystem : MonoBehaviour
 
 		if (morreu) {
 			state = battleState.won;
-            EndBattle();
+            StartCoroutine (EndBattle());
 		} else {
 			state = battleState.enemyTurn;
 			StartCoroutine (EnemyTurn ());
@@ -342,7 +348,7 @@ public class BattleSystem : MonoBehaviour
 		if (playerMorreu) 
 		{
 			state = battleState.lost;
-            EndBattle();
+            StartCoroutine (EndBattle());
             
         }
         else if(multiplosAtaques <= 4.5f && playerMorreu == false)
@@ -355,32 +361,33 @@ public class BattleSystem : MonoBehaviour
 		{
 			state = battleState.enemyTurn;
 			fatorDeQueda++;
-			segundoAtaque();
+			StartCoroutine (EnemyTurn ());
 		}
     }
-	
-	void segundoAtaque ()
-	{
-		StartCoroutine (EnemyTurn ());	
-	}
 
-	void EndBattle()
+	IEnumerator EndBattle()
 	{
+        // O que acontece se vencer?
 		if (state == battleState.won) {
-            //adicionar som de end game, dar load no menu--------------------------------------------------
-            
-            // O que acontece se perder?
-            // musica de vitória
-            // esperar um tempo antes do load
-            SceneManager.LoadScene("Level_1");
+            //adicionar som de vitória--------------------------------------------------
+            yield return new WaitForSeconds(1f);
+            Destroy(enemy);
+            yield return new WaitForSeconds(1f);
+            winText.SetActive (true);
+            yield return new WaitForSeconds(3f); // Tempo da musica, tem que ver como vai ser
+            SceneManager.LoadScene("Menu");
             print("ganhei");
-		} else 
+		} else //O que acontece se perder?
 		{
-            //adicionar som de vitória, dar load na fase--------------------------------------------------
-
-            //O que acontece se perder?
-            // musica de vitória
-            // esperar um tempo antes do load
+            //adicionar som de end game--------------------------------------------------
+            yield return new WaitForSeconds(1f);
+            Destroy(fireMage);
+            Destroy(earthMage);
+            Destroy(airMage);
+            Destroy(waterMage);
+            yield return new WaitForSeconds(1f);
+            looseText.SetActive (true);
+            yield return new WaitForSeconds(3f);
             SceneManager.LoadScene("Menu");
             print("no ceu tem pao?");
 		}
