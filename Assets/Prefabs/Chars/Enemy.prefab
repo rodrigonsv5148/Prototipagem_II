@@ -100,8 +100,8 @@ MonoBehaviour:
   unitName: Amalgama
   dodgeBase: 10
   damageBase: 10
-  maxHP: 20
-  atualHP: 20
+  maxHP: 300
+  atualHP: 227
   maxEnergy: 0
   atualEnergy: 0
   energyperturn: 3

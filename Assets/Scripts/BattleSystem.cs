@@ -52,7 +52,34 @@ public class BattleSystem : MonoBehaviour
 	private float multiplosAtaques = 0.0f;
 	private float fatorDeQueda = 0.0f;
 
-	void Start()
+	public Transform spawnAttackLocation1;
+    public Transform spawnAttackLocation2;
+    public string nomeDoAttack;
+    public string danoDoAttack;
+    public string fase = "";
+
+    public GameObject fireAttackPrefab;
+    public GameObject EarthAttackPrefab;
+    public GameObject AirAttackPrefab;
+    public GameObject waterAttackPrefab;
+    public GameObject magmaAttackPrefab;
+    public GameObject smokeAttackPrefab;
+    public GameObject vaporAttackPrefab;
+    public GameObject areiaAttackPrefab;
+    public GameObject plantaAttackPrefab;
+    public GameObject geloAttackPrefab;
+    public GameObject gasVulcanicoAttackPrefab;
+    public GameObject obsidianaAttackPrefab;
+    public GameObject chuvaAcidaAttackPrefab;
+    public GameObject salitreAttackPrefab;
+    public GameObject eterAttackPrefab;
+
+    public GameObject fakeAttack;
+
+
+
+    public float tempoDeAnimacao = 1.0f;
+    void Start()
     {
         state = battleState.start;
 		StartCoroutine(SetupBattle());
@@ -84,74 +111,201 @@ public class BattleSystem : MonoBehaviour
 		yield return new WaitForSeconds (1f);
 
 		state = battleState.playerTurn;
-		PlayerTurn();
+        fase = "Player Turn";
+        PlayerTurn();
     }
 
 	IEnumerator PlayerAttack()
 	{
-		//Selecionador de magias
-		switch(attackUnion)
+        GameObject Attack = fakeAttack;
+
+        //Selecionador de magias
+        switch (attackUnion)
 		{
-			// Para todas as magias add efeito de som e animações, e textos-------------------------------------------------------------------------------------------------------
-			case 1:
+            // Para todas as magias add efeito de som e animações, e arrumar tempos-------------------------------------------------------------------------------------------------------
+            case 1:
 				magia = 9;
-				break;
+                Attack = Instantiate(fireAttackPrefab, spawnAttackLocation1);
+                Animator animator = Attack.GetComponent<Animator>();
+                animator.Play("FireAttack");
+                tempoDeAnimacao = 2.0f;
+                //Som da animação (Tem que ser menor ou igual o tempo de animação)
+                danoDoAttack = magia.ToString();
+                nomeDoAttack = "Fogo";
+                break;
+
 			case 2:
 				magia = 12;
-				break;
+                Attack = Instantiate(EarthAttackPrefab, spawnAttackLocation1);
+                //Animator animator = Attack.GetComponent<Animator>();
+                //animator.Play("FireAttack");
+                //Som da animação (Tem que ser menor ou igual o tempo de animação)
+
+                tempoDeAnimacao = 2.0f;// Configurar quando botar animação
+                danoDoAttack = magia.ToString();
+                nomeDoAttack = "Terra";
+                break;
+
 			case 4:
-				magia = 6;
-				break;
+                magia = 6;
+                Attack = Instantiate(AirAttackPrefab, spawnAttackLocation1);//Talvez configurar dependendo de onde venha o ataque, se ele cair no inimigo
+                //Animator animator = Attack.GetComponent<Animator>();
+                //animator.Play("FireAttack");
+                //Som da animação (Tem que ser menor ou igual o tempo de animação)
+
+                tempoDeAnimacao = 2.0f;// Configurar quando botar animação
+                danoDoAttack = magia.ToString();
+                nomeDoAttack = "Ar";
+                break;
 			case 8:
-				magia = 10;
-				break;
+                
+                magia = 10;
+                Attack = Instantiate(waterAttackPrefab, spawnAttackLocation1);//Talvez configurar dependendo de onde venha o ataque, se ele cair no inimigo
+                //Animator animator = Attack.GetComponent<Animator>();
+                //animator.Play("FireAttack");
+                //Som da animação (Tem que ser menor ou igual o tempo de animação)
+
+                tempoDeAnimacao = 2.0f;// Configurar quando botar animação
+                danoDoAttack = magia.ToString();
+                nomeDoAttack = "Agua";
+                break;
 			//--------------------------------
 			case 3:
 				magia = 21;
-				break;
+                Attack = Instantiate(magmaAttackPrefab, spawnAttackLocation1);//Talvez configurar dependendo de onde venha o ataque, se ele cair no inimigo
+                //Animator animator = Attack.GetComponent<Animator>();
+                //animator.Play("FireAttack");
+                //Som da animação (Tem que ser menor ou igual o tempo de animação)
+
+                tempoDeAnimacao = 2.0f;// Configurar quando botar animação
+                danoDoAttack = magia.ToString();
+                nomeDoAttack = "Magma";
+                break;
 			case 5:
-				magia = 15;
-				break;
+				magia = 3;
+                Attack = Instantiate(smokeAttackPrefab, spawnAttackLocation1);//Talvez configurar dependendo de onde venha o ataque, se ele cair no inimigo
+                //Animator animator = Attack.GetComponent<Animator>();
+                //animator.Play("FireAttack");
+                //Som da animação (Tem que ser menor ou igual o tempo de animação)
+
+                tempoDeAnimacao = 2.0f;// Configurar quando botar animação
+                danoDoAttack = magia.ToString();
+                nomeDoAttack = "Fumaça";
+                break;
 			case 9:
 				magia = 13;
-				break;
+                Attack = Instantiate(vaporAttackPrefab, spawnAttackLocation1);//Talvez configurar dependendo de onde venha o ataque, se ele cair no inimigo
+                //Animator animator = Attack.GetComponent<Animator>();
+                //animator.Play("FireAttack");
+                //Som da animação (Tem que ser menor ou igual o tempo de animação)
+
+                tempoDeAnimacao = 2.0f;// Configurar quando botar animação
+                danoDoAttack = magia.ToString();
+                nomeDoAttack = "Vapor";
+                break;
 			case 6:
 				magia = 11;
-				break;
+                Attack = Instantiate(areiaAttackPrefab, spawnAttackLocation1);//Talvez configurar dependendo de onde venha o ataque, se ele cair no inimigo
+                //Animator animator = Attack.GetComponent<Animator>();
+                //animator.Play("FireAttack");
+                //Som da animação (Tem que ser menor ou igual o tempo de animação)
+
+                tempoDeAnimacao = 2.0f;// Configurar quando botar animação
+                danoDoAttack = magia.ToString();
+                nomeDoAttack = "Areia";
+                break;
 			case 10:
 				magia = 14;
-				break;
+                Attack = Instantiate(plantaAttackPrefab, spawnAttackLocation1);//Talvez configurar dependendo de onde venha o ataque, se ele cair no inimigo
+                //Animator animator = Attack.GetComponent<Animator>();
+                //animator.Play("FireAttack");
+                //Som da animação (Tem que ser menor ou igual o tempo de animação)
+
+                tempoDeAnimacao = 2.0f;// Configurar quando botar animação
+                danoDoAttack = magia.ToString();
+                nomeDoAttack = "Planta";
+                break;
 			case 12:
 				magia = 15;
-				break;
+                Attack = Instantiate(geloAttackPrefab, spawnAttackLocation1);//Talvez configurar dependendo de onde venha o ataque, se ele cair no inimigo
+                //Animator animator = Attack.GetComponent<Animator>();
+                //animator.Play("FireAttack");
+                //Som da animação (Tem que ser menor ou igual o tempo de animação)
+
+                tempoDeAnimacao = 2.0f;// Configurar quando botar animação
+                danoDoAttack = magia.ToString();
+                nomeDoAttack = "Gelo";
+                break;
             //------------------------------
             case 7:
-				magia = 25;
-				break;
-			case 11:
 				magia = 20;
-				break;
+                Attack = Instantiate(gasVulcanicoAttackPrefab, spawnAttackLocation1);//Talvez configurar dependendo de onde venha o ataque, se ele cair no inimigo
+                //Animator animator = Attack.GetComponent<Animator>();
+                //animator.Play("FireAttack");
+                //Som da animação (Tem que ser menor ou igual o tempo de animação)
+
+                tempoDeAnimacao = 2.0f;// Configurar quando botar animação
+                danoDoAttack = magia.ToString();
+                nomeDoAttack = "Gás Vulcânico (Que é toxico)";
+                break;
+			case 11:
+				magia = 25;
+                Attack = Instantiate(obsidianaAttackPrefab, spawnAttackLocation1);//Talvez configurar dependendo de onde venha o ataque, se ele cair no inimigo
+                //Animator animator = Attack.GetComponent<Animator>();
+                //animator.Play("FireAttack");
+                //Som da animação (Tem que ser menor ou igual o tempo de animação)
+                
+                tempoDeAnimacao = 2.0f;// Configurar quando botar animação
+                danoDoAttack = magia.ToString();
+                nomeDoAttack = "Obsidiana";
+                break;
 			case 13:
-				magia = 22;
-				break;
+				magia = 10;
+                Attack = Instantiate(chuvaAcidaAttackPrefab, spawnAttackLocation1);//Talvez configurar dependendo de onde venha o ataque, se ele cair no inimigo
+                //Animator animator = Attack.GetComponent<Animator>();
+                //animator.Play("FireAttack");
+                //Som da animação (Tem que ser menor ou igual o tempo de animação)
+                
+                tempoDeAnimacao = 2.0f;// Configurar quando botar animação
+                danoDoAttack = magia.ToString();
+                nomeDoAttack = "Chuva ácida";
+                break;
 			case 14:
 				magia = 19;
-				break;
+                Attack = Instantiate(salitreAttackPrefab, spawnAttackLocation1);//Talvez configurar dependendo de onde venha o ataque, se ele cair no inimigo
+                //Animator animator = Attack.GetComponent<Animator>();
+                //animator.Play("FireAttack");
+                //Som da animação (Tem que ser menor ou igual o tempo de animação)
+
+                tempoDeAnimacao = 2.0f;// Configurar quando botar animação
+                danoDoAttack = magia.ToString();
+                nomeDoAttack = "Salitre";
+                break;
 			//----------------------------
 			case 15:
 				magia = 30;
-				break;
+                Attack = Instantiate(eterAttackPrefab, spawnAttackLocation1);//Talvez configurar dependendo de onde venha o ataque, se ele cair no inimigo
+                //Animator animator = Attack.GetComponent<Animator>();
+                //animator.Play("FireAttack");
+                //Som da animação (Tem que ser menor ou igual o tempo de animação)
+                
+                tempoDeAnimacao = 2.0f;// Configurar quando botar animação
+                danoDoAttack = magia.ToString();
+                nomeDoAttack = "Éter";
+                break;
 		}
 
 		bool morreu = enemyUnit.takeDamage (magia);
 
-		yield return new WaitForSeconds (1f);
+		yield return new WaitForSeconds (tempoDeAnimacao + 0.5f);
 
+        Destroy(Attack);
+		
 		enemyLife.setHP (enemyUnit.atualHP);
 
 		if (morreu) {
 			state = battleState.won;
-			EndBattle ();
+            EndBattle();
 		} else {
 			state = battleState.enemyTurn;
 			StartCoroutine (EnemyTurn ());
@@ -160,9 +314,10 @@ public class BattleSystem : MonoBehaviour
 
 	IEnumerator EnemyTurn() 
 	{
-		yield return new WaitForSeconds(1f);
+        fase = "Enemy Turn";
+        yield return new WaitForSeconds(1f);
 
-		bool playerMorreu = teamUnit.takeDamage(enemyUnit.damageBase);
+        bool playerMorreu = teamUnit.takeDamage(enemyUnit.damageBase);
 		print("besta Ataca");
 		// Adicionar som de ataque ------------------------------------------------------------------------------------
         playerLife.setHP(teamUnit.atualHP);
@@ -177,17 +332,19 @@ public class BattleSystem : MonoBehaviour
 		earthButton.isOn = false;
 		airButton.isOn = false;
 		waterButton.isOn = false;
+
 		//Resetando botões para poder serem ativados no próximo turno
 		attackUnion = 0;
 
 		if (playerMorreu) 
 		{
 			state = battleState.lost;
-			EndBattle();
+            EndBattle();
             
         }
         else if(multiplosAtaques <= 4.5f && playerMorreu == false)
 		{
+            fase = "Player Turn";
             state = battleState.playerTurn;
 			fatorDeQueda = 0;
 
@@ -225,17 +382,23 @@ public class BattleSystem : MonoBehaviour
 
 	public void OnAttackButton ()
 	{
-		if (state != battleState.playerTurn) 
-		{
-			return;
-		}
+        if(attackUnion > 0) 
+        {
+            if (state != battleState.playerTurn)
+            {
+                return;
+            }
 
-		StartCoroutine (PlayerAttack ());
+            StartCoroutine(PlayerAttack());
+        }
+        else 
+        {
+            nomeDoAttack = "Escolha elementos";
+        }
 	}
 
 	public void OnFireButton()
 	{
-
 		//Em todos, botar som do elemento e mudar o sprite quando ativar, e som de magia se dissipando quando desativar------------------------------------------------------------------
 		if (buttonFire == false) {
 			mage1Location.position = (mage1Location.position + position);
