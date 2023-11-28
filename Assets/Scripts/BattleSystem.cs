@@ -6,7 +6,9 @@ using static UnityEngine.UI.CanvasScaler;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEditor.SearchService;
+using TMPro;
 
+//Adicionar chance do boss cancelar o uso de um botão.
 
 public enum battleState { start, playerTurn, enemyTurn, won, lost };
 public class BattleSystem : MonoBehaviour
@@ -105,11 +107,40 @@ public class BattleSystem : MonoBehaviour
     public int danoAtkSalitre = 19;
     public int danoAtkEter = 30;
 
+    public AudioSource somFireAtk;
+    public AudioSource somEarthAtk;
+    public AudioSource somAirAtk;
+    public AudioSource somWaterAtk;
+    public AudioSource somMagmaAtk;
+    public AudioSource somSmokeAtk;
+    public AudioSource somVaporAtk;
+    public AudioSource somSandAtk;
+    public AudioSource somPlantAtk;
+    public AudioSource somIceAtk;
+    public AudioSource somVulcanicGasAtk;
+    public AudioSource somObsidianAtk;
+    public AudioSource somAcidRainAtk;
+    public AudioSource somSalitreAtk;
+    public AudioSource somEterAtk;
+    public AudioSource battleMusic;
+    public AudioSource enemyAttack;
+    public AudioSource victorySound;
+    public AudioSource loseSound;
+    public AudioSource prepareMagicEffect;
+    public AudioSource errorEffect;
+    public AudioSource firePreparation;
+    public AudioSource magicDesarm;
+    public AudioSource earthPreparation;
+    public AudioSource airPreparation;
+    public AudioSource waterPreparation;
+    bool interativo = true;
+    public GameObject texto;
+    private TMP_Text statusTeam;
     void Start()
     {
         state = battleState.start;
 		StartCoroutine(SetupBattle());
-		//iniciar musica de fundo -------------------------------------------------------------------------------------------------------------------------------------------------------------
+        battleMusic.Play();
     }
 
 	IEnumerator SetupBattle() 
@@ -148,14 +179,14 @@ public class BattleSystem : MonoBehaviour
         //Selecionador de magias
         switch (attackUnion)
 		{
-            // Para todas as magias, add efeito de som e animações, e arrumar tempos de duração-------------------------------------------------------------------------------------------------------
+            // Para todas as magias, add animações, e arrumar tempos de duração (relação animação/som)
             case 1:
 				magia = danoAtkFogo;
                 Attack = Instantiate(fireAttackPrefab, spawnAttackLocation1);
                 Animator animator = Attack.GetComponent<Animator>();
                 animator.Play("FireAttack");
                 tempoDeAnimacao = 2.0f;
-                //Som da animação (Tem que ser menor ou igual o tempo de animação)
+                somFireAtk.Play();
                 danoDoAttack = magia.ToString();
                 nomeDoAttack = "Fogo";
                 break;
@@ -165,8 +196,7 @@ public class BattleSystem : MonoBehaviour
                 Attack = Instantiate(EarthAttackPrefab, spawnAttackLocation1);
                 //Animator animator = Attack.GetComponent<Animator>();
                 //animator.Play("FireAttack");
-                //Som da animação (Tem que ser menor ou igual o tempo de animação)
-
+                somEarthAtk.Play();
                 tempoDeAnimacao = 2.0f;// Configurar quando botar animação
                 danoDoAttack = magia.ToString();
                 nomeDoAttack = "Terra";
@@ -177,8 +207,7 @@ public class BattleSystem : MonoBehaviour
                 Attack = Instantiate(AirAttackPrefab, spawnAttackLocation1);//Talvez configurar dependendo de onde venha o ataque, se ele cair no inimigo
                 //Animator animator = Attack.GetComponent<Animator>();
                 //animator.Play("FireAttack");
-                //Som da animação (Tem que ser menor ou igual o tempo de animação)
-
+                somAirAtk.Play();
                 tempoDeAnimacao = 2.0f;// Configurar quando botar animação
                 danoDoAttack = magia.ToString();
                 nomeDoAttack = "Ar";
@@ -189,8 +218,7 @@ public class BattleSystem : MonoBehaviour
                 Attack = Instantiate(waterAttackPrefab, spawnAttackLocation1);//Talvez configurar dependendo de onde venha o ataque, se ele cair no inimigo
                 //Animator animator = Attack.GetComponent<Animator>();
                 //animator.Play("FireAttack");
-                //Som da animação (Tem que ser menor ou igual o tempo de animação)
-
+                somWaterAtk.Play();
                 tempoDeAnimacao = 2.0f;// Configurar quando botar animação
                 danoDoAttack = magia.ToString();
                 nomeDoAttack = "Agua";
@@ -201,8 +229,7 @@ public class BattleSystem : MonoBehaviour
                 Attack = Instantiate(magmaAttackPrefab, spawnAttackLocation1);//Talvez configurar dependendo de onde venha o ataque, se ele cair no inimigo
                 //Animator animator = Attack.GetComponent<Animator>();
                 //animator.Play("FireAttack");
-                //Som da animação (Tem que ser menor ou igual o tempo de animação)
-
+                somMagmaAtk.Play();
                 tempoDeAnimacao = 2.0f;// Configurar quando botar animação
                 danoDoAttack = magia.ToString();
                 nomeDoAttack = "Magma";
@@ -212,8 +239,7 @@ public class BattleSystem : MonoBehaviour
                 Attack = Instantiate(smokeAttackPrefab, spawnAttackLocation1);//Talvez configurar dependendo de onde venha o ataque, se ele cair no inimigo
                 //Animator animator = Attack.GetComponent<Animator>();
                 //animator.Play("FireAttack");
-                //Som da animação (Tem que ser menor ou igual o tempo de animação)
-
+                somSmokeAtk.Play();
                 tempoDeAnimacao = 2.0f;// Configurar quando botar animação
                 danoDoAttack = magia.ToString();
                 nomeDoAttack = "Fumaça";
@@ -223,8 +249,7 @@ public class BattleSystem : MonoBehaviour
                 Attack = Instantiate(vaporAttackPrefab, spawnAttackLocation1);//Talvez configurar dependendo de onde venha o ataque, se ele cair no inimigo
                 //Animator animator = Attack.GetComponent<Animator>();
                 //animator.Play("FireAttack");
-                //Som da animação (Tem que ser menor ou igual o tempo de animação)
-
+                somVaporAtk.Play();
                 tempoDeAnimacao = 2.0f;// Configurar quando botar animação
                 danoDoAttack = magia.ToString();
                 nomeDoAttack = "Vapor";
@@ -234,8 +259,7 @@ public class BattleSystem : MonoBehaviour
                 Attack = Instantiate(areiaAttackPrefab, spawnAttackLocation1);//Talvez configurar dependendo de onde venha o ataque, se ele cair no inimigo
                 //Animator animator = Attack.GetComponent<Animator>();
                 //animator.Play("FireAttack");
-                //Som da animação (Tem que ser menor ou igual o tempo de animação)
-
+                somSandAtk.Play();
                 tempoDeAnimacao = 2.0f;// Configurar quando botar animação
                 danoDoAttack = magia.ToString();
                 nomeDoAttack = "Areia";
@@ -245,8 +269,7 @@ public class BattleSystem : MonoBehaviour
                 Attack = Instantiate(plantaAttackPrefab, spawnAttackLocation1);//Talvez configurar dependendo de onde venha o ataque, se ele cair no inimigo
                 //Animator animator = Attack.GetComponent<Animator>();
                 //animator.Play("FireAttack");
-                //Som da animação (Tem que ser menor ou igual o tempo de animação)
-
+                somPlantAtk.Play();
                 tempoDeAnimacao = 2.0f;// Configurar quando botar animação
                 danoDoAttack = magia.ToString();
                 nomeDoAttack = "Planta";
@@ -256,8 +279,7 @@ public class BattleSystem : MonoBehaviour
                 Attack = Instantiate(geloAttackPrefab, spawnAttackLocation1);//Talvez configurar dependendo de onde venha o ataque, se ele cair no inimigo
                 //Animator animator = Attack.GetComponent<Animator>();
                 //animator.Play("FireAttack");
-                //Som da animação (Tem que ser menor ou igual o tempo de animação)
-
+                somIceAtk.Play();
                 tempoDeAnimacao = 2.0f;// Configurar quando botar animação
                 danoDoAttack = magia.ToString();
                 nomeDoAttack = "Gelo";
@@ -268,8 +290,7 @@ public class BattleSystem : MonoBehaviour
                 Attack = Instantiate(gasVulcanicoAttackPrefab, spawnAttackLocation1);//Talvez configurar dependendo de onde venha o ataque, se ele cair no inimigo
                 //Animator animator = Attack.GetComponent<Animator>();
                 //animator.Play("FireAttack");
-                //Som da animação (Tem que ser menor ou igual o tempo de animação)
-
+                somVulcanicGasAtk.Play();
                 tempoDeAnimacao = 2.0f;// Configurar quando botar animação
                 danoDoAttack = magia.ToString();
                 nomeDoAttack = "Gás Vulcânico (Que é toxico)";
@@ -279,8 +300,7 @@ public class BattleSystem : MonoBehaviour
                 Attack = Instantiate(obsidianaAttackPrefab, spawnAttackLocation1);//Talvez configurar dependendo de onde venha o ataque, se ele cair no inimigo
                 //Animator animator = Attack.GetComponent<Animator>();
                 //animator.Play("FireAttack");
-                //Som da animação (Tem que ser menor ou igual o tempo de animação)
-                
+                somObsidianAtk.Play();
                 tempoDeAnimacao = 2.0f;// Configurar quando botar animação
                 danoDoAttack = magia.ToString();
                 nomeDoAttack = "Obsidiana";
@@ -290,8 +310,7 @@ public class BattleSystem : MonoBehaviour
                 Attack = Instantiate(chuvaAcidaAttackPrefab, spawnAttackLocation1);//Talvez configurar dependendo de onde venha o ataque, se ele cair no inimigo
                 //Animator animator = Attack.GetComponent<Animator>();
                 //animator.Play("FireAttack");
-                //Som da animação (Tem que ser menor ou igual o tempo de animação)
-                
+                somAcidRainAtk.Play();
                 tempoDeAnimacao = 2.0f;// Configurar quando botar animação
                 danoDoAttack = magia.ToString();
                 nomeDoAttack = "Chuva ácida";
@@ -301,8 +320,7 @@ public class BattleSystem : MonoBehaviour
                 Attack = Instantiate(salitreAttackPrefab, spawnAttackLocation1);//Talvez configurar dependendo de onde venha o ataque, se ele cair no inimigo
                 //Animator animator = Attack.GetComponent<Animator>();
                 //animator.Play("FireAttack");
-                //Som da animação (Tem que ser menor ou igual o tempo de animação)
-
+                somSalitreAtk.Play();
                 tempoDeAnimacao = 2.0f;// Configurar quando botar animação
                 danoDoAttack = magia.ToString();
                 nomeDoAttack = "Salitre";
@@ -313,8 +331,7 @@ public class BattleSystem : MonoBehaviour
                 Attack = Instantiate(eterAttackPrefab, spawnAttackLocation1);//Talvez configurar dependendo de onde venha o ataque, se ele cair no inimigo
                 //Animator animator = Attack.GetComponent<Animator>();
                 //animator.Play("FireAttack");
-                //Som da animação (Tem que ser menor ou igual o tempo de animação)
-                
+                somEterAtk.Play();
                 tempoDeAnimacao = 2.0f;// Configurar quando botar animação
                 danoDoAttack = magia.ToString();
                 nomeDoAttack = "Éter";
@@ -340,17 +357,91 @@ public class BattleSystem : MonoBehaviour
 
 	IEnumerator EnemyTurn() 
 	{
+        statusTeam = texto.GetComponent<TMP_Text>();
+        if(interativo == true)
+        {
+            fireButton.interactable = true;
+            earthButton.interactable = true;
+            airButton.interactable = true;
+            waterButton.interactable = true;
+        }
+        
         fase = "Enemy Turn";
         yield return new WaitForSeconds(1f);
 
         bool playerMorreu = teamUnit.takeDamage(enemyUnit.damageBase);
 		print("besta Ataca");
-		// Adicionar som de ataque ------------------------------------------------------------------------------------
+        enemyAttack.Play();
         playerLife.setHP(teamUnit.atualHP);
+        if(Random.value > 0.7)
+        {
+            float desabilitar;
+            desabilitar = Random.value;
+            if(desabilitar < 0.25)
+            {
+                fireButton.interactable = false;
+                if(interativo == true)
+                {
+                    statusTeam.text = "status: Fire warrior stunned";
+                }else
+                {
+                    statusTeam.text = "status: Fire warrior supressed";
+                    yield return new WaitForSeconds(3f);
+                    statusTeam.text = "status: Curse of suppression";
+                }
+            }
+            else if (desabilitar >= 0.25 && desabilitar < 0.5)
+            {
+                earthButton.interactable = false;
+                if(interativo == true)
+                {
+                    statusTeam.text = "status: Earth warrior stunned";
+                }else
+                {
+                    statusTeam.text = "status: Earth warrior supressed";
+                    yield return new WaitForSeconds(3f);
+                    statusTeam.text = "status: Curse of suppression";
+                }
 
-        yield return new WaitForSeconds(1f);
+            }else if (desabilitar >= 0.5 && desabilitar < 0.75)
+            {
+                airButton.interactable = false;
+                if(interativo == true)
+                {
+                    statusTeam.text = "status: Air warrior stunned";
+                }else
+                {
+                    statusTeam.text = "status: Air warrior supressed";
+                    yield return new WaitForSeconds(3f);
+                    statusTeam.text = "status: Curse of suppression";
+                }
 
-		// Codigo de multiplos ataques
+            }else if (desabilitar >= 0.75 && desabilitar < 1)
+            {
+                waterButton.interactable = false;
+                if(interativo == true)
+                {
+                    statusTeam.text = "status: Water warrior stunned";
+                }else
+                {
+                    statusTeam.text = "status: Air warrior supressed";
+                    yield return new WaitForSeconds(3f);
+                    statusTeam.text = "status: Curse of suppression";
+                }
+            }
+        }else
+        {
+            statusTeam.text = "Status: Normal";
+        }
+
+        if(Random.value > 0.85)
+        {
+            interativo = false;
+            statusTeam.text = "status: Curse of suppression";
+        }
+        yield return new WaitForSeconds(2f);// regular baseado no tempo do som do ataque
+		
+        // Codigo de multiplos ataques
 		multiplosAtaques = (Random.value * attackUnion) - fatorDeQueda;
 		print(multiplosAtaques);
 		
@@ -386,25 +477,25 @@ public class BattleSystem : MonoBehaviour
 	{
         // O que acontece se vencer?
 		if (state == battleState.won) {
-            //adicionar som de vitória--------------------------------------------------
+            victorySound.Play();
             yield return new WaitForSeconds(1f);
             Destroy(enemy);
             yield return new WaitForSeconds(1f);
-            winText.SetActive (true);
-            yield return new WaitForSeconds(3f); // Tempo da musica, tem que ver como vai ser
+            winText.SetActive (true);// Podemos trocar o texto por uma imagem;
+            yield return new WaitForSeconds(3f);//Ajustar os 3 yield ao tempo ao som de vitória
             SceneManager.LoadScene("Menu");
             print("ganhei");
 		} else //O que acontece se perder?
 		{
-            //adicionar som de end game--------------------------------------------------
+            loseSound.Play();
             yield return new WaitForSeconds(1f);
             Destroy(fireMage);
             Destroy(earthMage);
             Destroy(airMage);
             Destroy(waterMage);
             yield return new WaitForSeconds(1f);
-            looseText.SetActive (true);
-            yield return new WaitForSeconds(3f);
+            looseText.SetActive (true);// Podemos trocar o texto por uma imagem;
+            yield return new WaitForSeconds(3f);//Ajustar os 3 yield ao tempo ao som de vitória
             SceneManager.LoadScene("Menu");
             print("no ceu tem pao?");
 		}
@@ -414,71 +505,83 @@ public class BattleSystem : MonoBehaviour
 
 	public void OnAttackButton ()
 	{
+        StartCoroutine(attackButton());
+	}
+    IEnumerator attackButton ()
+    {
         if(attackUnion > 0) 
         {
+            prepareMagicEffect.Play();
+            yield return new WaitForSeconds(3f);//Ajustar ao tempo ao som do efeito
             if (state != battleState.playerTurn)
             {
-                return;
+                //return; ---------------------------------------- não sei se vai fazer falta
             }
             StartCoroutine(PlayerAttack());
         }
         else 
         {
+            errorEffect.Play();
+            yield return new WaitForSeconds(3f);//Ajustar ao tempo ao som do efeito
             nomeDoAttack = "Escolha elementos";
         }
-	}
-
+    }
 	public void OnFireButton()
 	{
 		//Em todos, botar som do elemento e mudar o sprite quando ativar, e som de magia se dissipando quando desativar------------------------------------------------------------------
 		if (buttonFire == false) {
+            firePreparation.Play();
 			mage1Location.position = (mage1Location.position + position);
 			attackUnion++;
 			buttonFire = true;
 		} else 
 		{
+            magicDesarm.Play();
 			mage1Location.position = (mage1Location.position - position);
 			attackUnion--;
 			buttonFire = false;
 		}
 	}
-
 	public void OnEarthButton()
 	{
 		if (buttonEarth == false) {
+            earthPreparation.Play();
 			mage2Location.position = (mage2Location.position + position);
 			attackUnion += 2;
 			buttonEarth = true;
 		} else 
 		{
+            magicDesarm.Play();
 			mage2Location.position = (mage2Location.position - position);
 			attackUnion -= 2;
 			buttonEarth = false;
 		}
 	}
-
 	public void OnAirButton()
 	{
 		if (buttonAir == false) {
+            airPreparation.Play();
 			mage3Location.position = (mage3Location.position + position);
 			attackUnion += 4;
 			buttonAir = true;
 		} else 
 		{
+            magicDesarm.Play();
 			mage3Location.position = (mage3Location.position - position);
 			attackUnion -= 4;
 			buttonAir = false;
 		}
 	}
-
 	public void OnWaterButton()
 	{
 		if (buttonWater == false) {
+            waterPreparation.Play();
 			mage4Location.position = (mage4Location.position + position);
 			attackUnion += 8;
 			buttonWater = true;
 		} else 
 		{
+            magicDesarm.Play();
 			mage4Location.position = (mage4Location.position - position);
 			attackUnion -= 8;
 			buttonWater = false;
