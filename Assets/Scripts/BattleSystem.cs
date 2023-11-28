@@ -13,6 +13,29 @@ using TMPro;
 public enum battleState { start, playerTurn, enemyTurn, won, lost };
 public class BattleSystem : MonoBehaviour
 {
+    public bool stun = true;
+    public float stunChance = 30;
+    public bool supression = false;// só funciona com stun habilitado
+    public float supressionChance = 15;
+    public bool corrosion = true;
+    public float corrosionChance = 25;
+    private int turnsCorrosion = 0;
+    public bool deathMark = true;
+    private bool deathMarkOn = false;
+    public float deathMarkChance = 9;
+    public int turnsToDeath = 0;
+    public bool beserker = true;
+    public bool criticAttack = true;
+    public float criticAttackChance = 30;
+    private int baseDamage = 0;
+    public int criticFactor = 2;
+
+    //stunAlly
+    //Regen
+    //CorrosionAlly
+    //cut
+    //burn ally
+
     public GameObject playerFirePrefab;
     public GameObject playerEarthPrefab;
     public GameObject playerAirPrefab;
@@ -59,9 +82,12 @@ public class BattleSystem : MonoBehaviour
 
 	public Transform spawnAttackLocation1;
     public Transform spawnAttackLocation2;
-    public string nomeDoAttack;
-    public string danoDoAttack;
-    public string fase = "";
+    public GameObject nomeDoAttack;
+    private TMP_Text attackText;
+    public GameObject danoDoAttack;
+    private TMP_Text danoAttackText;
+    public GameObject fase;
+    private TMP_Text faseText;
 
     public GameObject fireAttackPrefab;
     public GameObject EarthAttackPrefab;
@@ -79,7 +105,7 @@ public class BattleSystem : MonoBehaviour
     public GameObject salitreAttackPrefab;
     public GameObject eterAttackPrefab;
 
-    public GameObject fakeAttack;
+    private GameObject fakeAttack;
 
     public GameObject enemy;
     public GameObject fireMage;
@@ -141,6 +167,9 @@ public class BattleSystem : MonoBehaviour
         state = battleState.start;
 		StartCoroutine(SetupBattle());
         battleMusic.Play();
+        attackText = nomeDoAttack.GetComponent<TMP_Text>();
+        danoAttackText = danoDoAttack.GetComponent<TMP_Text>();
+        faseText = fase.GetComponent<TMP_Text>();
     }
 
 	IEnumerator SetupBattle() 
@@ -168,12 +197,16 @@ public class BattleSystem : MonoBehaviour
 		yield return new WaitForSeconds (1f);
 
 		state = battleState.playerTurn;
-        fase = "Player Turn";
+        faseText.text = "Player Turn";
         PlayerTurn();
     }
 
 	IEnumerator PlayerAttack()
 	{
+        if (turnsToDeath != 0)
+        {
+            turnsToDeath--;
+        }
         GameObject Attack = fakeAttack;
 
         //Selecionador de magias
@@ -187,8 +220,11 @@ public class BattleSystem : MonoBehaviour
                 animator.Play("FireAttack");
                 tempoDeAnimacao = 2.0f;
                 somFireAtk.Play();
-                danoDoAttack = magia.ToString();
-                nomeDoAttack = "Fogo";
+                danoAttackText.text = magia.ToString();
+                attackText.text = "Fogo";
+                yield return new WaitForSeconds (2.0f);
+                danoAttackText.text = "";
+                attackText.text = "";
                 break;
 
 			case 2:
@@ -198,8 +234,11 @@ public class BattleSystem : MonoBehaviour
                 //animator.Play("FireAttack");
                 somEarthAtk.Play();
                 tempoDeAnimacao = 2.0f;// Configurar quando botar animação
-                danoDoAttack = magia.ToString();
-                nomeDoAttack = "Terra";
+                danoAttackText.text = magia.ToString();
+                attackText.text = "Terra";
+                yield return new WaitForSeconds (2.0f);
+                danoAttackText.text = "";
+                attackText.text = "";
                 break;
 
 			case 4:
@@ -209,8 +248,11 @@ public class BattleSystem : MonoBehaviour
                 //animator.Play("FireAttack");
                 somAirAtk.Play();
                 tempoDeAnimacao = 2.0f;// Configurar quando botar animação
-                danoDoAttack = magia.ToString();
-                nomeDoAttack = "Ar";
+                danoAttackText.text = magia.ToString();
+                attackText.text = "Ar";
+                yield return new WaitForSeconds (2.0f);
+                danoAttackText.text = "";
+                attackText.text = "";
                 break;
 			case 8:
                 
@@ -220,8 +262,11 @@ public class BattleSystem : MonoBehaviour
                 //animator.Play("FireAttack");
                 somWaterAtk.Play();
                 tempoDeAnimacao = 2.0f;// Configurar quando botar animação
-                danoDoAttack = magia.ToString();
-                nomeDoAttack = "Agua";
+                danoAttackText.text = magia.ToString();
+                attackText.text = "Agua";
+                yield return new WaitForSeconds (2.0f);
+                danoAttackText.text = "";
+                attackText.text = "";
                 break;
 			//--------------------------------
 			case 3:
@@ -231,8 +276,11 @@ public class BattleSystem : MonoBehaviour
                 //animator.Play("FireAttack");
                 somMagmaAtk.Play();
                 tempoDeAnimacao = 2.0f;// Configurar quando botar animação
-                danoDoAttack = magia.ToString();
-                nomeDoAttack = "Magma";
+                danoAttackText.text = magia.ToString();
+                attackText.text = "Magma";
+                yield return new WaitForSeconds (2.0f);
+                danoAttackText.text = "";
+                attackText.text = "";
                 break;
 			case 5:
 				magia = danoAtkFumaca;
@@ -241,8 +289,11 @@ public class BattleSystem : MonoBehaviour
                 //animator.Play("FireAttack");
                 somSmokeAtk.Play();
                 tempoDeAnimacao = 2.0f;// Configurar quando botar animação
-                danoDoAttack = magia.ToString();
-                nomeDoAttack = "Fumaça";
+                danoAttackText.text = magia.ToString();
+                attackText.text = "Fumaça";
+                yield return new WaitForSeconds (2.0f);
+                danoAttackText.text = "";
+                attackText.text = "";
                 break;
 			case 9:
 				magia = danoAtkVapor;
@@ -251,8 +302,11 @@ public class BattleSystem : MonoBehaviour
                 //animator.Play("FireAttack");
                 somVaporAtk.Play();
                 tempoDeAnimacao = 2.0f;// Configurar quando botar animação
-                danoDoAttack = magia.ToString();
-                nomeDoAttack = "Vapor";
+                danoAttackText.text = magia.ToString();
+                attackText.text = "Vapor";
+                yield return new WaitForSeconds (2.0f);
+                danoAttackText.text = "";
+                attackText.text = "";
                 break;
 			case 6:
 				magia = danoAtkAreia;
@@ -261,8 +315,11 @@ public class BattleSystem : MonoBehaviour
                 //animator.Play("FireAttack");
                 somSandAtk.Play();
                 tempoDeAnimacao = 2.0f;// Configurar quando botar animação
-                danoDoAttack = magia.ToString();
-                nomeDoAttack = "Areia";
+                danoAttackText.text = magia.ToString();
+                attackText.text = "Areia";
+                yield return new WaitForSeconds (2.0f);
+                danoAttackText.text = "";
+                attackText.text = "";
                 break;
 			case 10:
 				magia = danoAtkPlanta;
@@ -271,8 +328,11 @@ public class BattleSystem : MonoBehaviour
                 //animator.Play("FireAttack");
                 somPlantAtk.Play();
                 tempoDeAnimacao = 2.0f;// Configurar quando botar animação
-                danoDoAttack = magia.ToString();
-                nomeDoAttack = "Planta";
+                danoAttackText.text = magia.ToString();
+                attackText.text = "Planta";
+                yield return new WaitForSeconds (2.0f);
+                danoAttackText.text = "";
+                attackText.text = "";
                 break;
 			case 12:
 				magia = danoAtkGelo;
@@ -281,8 +341,11 @@ public class BattleSystem : MonoBehaviour
                 //animator.Play("FireAttack");
                 somIceAtk.Play();
                 tempoDeAnimacao = 2.0f;// Configurar quando botar animação
-                danoDoAttack = magia.ToString();
-                nomeDoAttack = "Gelo";
+                danoAttackText.text = magia.ToString();
+                attackText.text = "Gelo";
+                yield return new WaitForSeconds (2.0f);
+                danoAttackText.text = "";
+                attackText.text = "";
                 break;
             //------------------------------
             case 7:
@@ -292,8 +355,11 @@ public class BattleSystem : MonoBehaviour
                 //animator.Play("FireAttack");
                 somVulcanicGasAtk.Play();
                 tempoDeAnimacao = 2.0f;// Configurar quando botar animação
-                danoDoAttack = magia.ToString();
-                nomeDoAttack = "Gás Vulcânico (Que é toxico)";
+                danoAttackText.text = magia.ToString();
+                attackText.text = "Gás Vulcânico (Que é toxico)";
+                yield return new WaitForSeconds (2.0f);
+                danoAttackText.text = "";
+                attackText.text = "";
                 break;
 			case 11:
 				magia = danoAtkObsidiana;
@@ -302,8 +368,11 @@ public class BattleSystem : MonoBehaviour
                 //animator.Play("FireAttack");
                 somObsidianAtk.Play();
                 tempoDeAnimacao = 2.0f;// Configurar quando botar animação
-                danoDoAttack = magia.ToString();
-                nomeDoAttack = "Obsidiana";
+                danoAttackText.text = magia.ToString();
+                attackText.text = "Obsidiana";
+                yield return new WaitForSeconds (2.0f);
+                danoAttackText.text = "";
+                attackText.text = "";
                 break;
 			case 13:
 				magia = danoAtkChuvaAcida;
@@ -312,8 +381,11 @@ public class BattleSystem : MonoBehaviour
                 //animator.Play("FireAttack");
                 somAcidRainAtk.Play();
                 tempoDeAnimacao = 2.0f;// Configurar quando botar animação
-                danoDoAttack = magia.ToString();
-                nomeDoAttack = "Chuva ácida";
+                danoAttackText.text = magia.ToString();
+                attackText.text = "Chuva ácida";
+                yield return new WaitForSeconds (2.0f);
+                danoAttackText.text = "";
+                attackText.text = "";
                 break;
 			case 14:
 				magia = danoAtkSalitre;
@@ -322,8 +394,11 @@ public class BattleSystem : MonoBehaviour
                 //animator.Play("FireAttack");
                 somSalitreAtk.Play();
                 tempoDeAnimacao = 2.0f;// Configurar quando botar animação
-                danoDoAttack = magia.ToString();
-                nomeDoAttack = "Salitre";
+                danoAttackText.text = magia.ToString();
+                attackText.text = "Salitre";
+                yield return new WaitForSeconds (2.0f);
+                danoAttackText.text = "";
+                attackText.text = "";
                 break;
 			//----------------------------
 			case 15:
@@ -333,8 +408,11 @@ public class BattleSystem : MonoBehaviour
                 //animator.Play("FireAttack");
                 somEterAtk.Play();
                 tempoDeAnimacao = 2.0f;// Configurar quando botar animação
-                danoDoAttack = magia.ToString();
-                nomeDoAttack = "Éter";
+                danoAttackText.text = magia.ToString();
+                attackText.text = "Éter";
+                yield return new WaitForSeconds (2.0f);
+                danoAttackText.text = "";
+                attackText.text = "";
                 break;
 		}
 
@@ -366,79 +444,123 @@ public class BattleSystem : MonoBehaviour
             waterButton.interactable = true;
         }
         
-        fase = "Enemy Turn";
+        faseText.text = "Enemy Turn";
         yield return new WaitForSeconds(1f);
-
+        if(criticAttack == true)
+        {
+            baseDamage = enemyUnit.damageBase;
+            if(Random.value > (100 - criticAttackChance)/100)
+            {
+                enemyUnit.damageBase = enemyUnit.damageBase * criticFactor;
+            }
+        }
         bool playerMorreu = teamUnit.takeDamage(enemyUnit.damageBase);
 		print("besta Ataca");
         enemyAttack.Play();
         playerLife.setHP(teamUnit.atualHP);
-        if(Random.value > 0.7)
+
+        if(criticAttack == true)
         {
-            float desabilitar;
-            desabilitar = Random.value;
-            if(desabilitar < 0.25)
+            enemyUnit.damageBase = baseDamage;
+        }
+        if(stun == true)
+        {
+            if(Random.value > ( 100 - stunChance)/100 )
             {
-                fireButton.interactable = false;
-                if(interativo == true)
+                float desabilitar;
+                desabilitar = Random.value;
+                if(desabilitar < 0.25)
                 {
-                    statusTeam.text = "status: Fire warrior stunned";
-                }else
+                    fireButton.interactable = false;
+                    if(interativo == true)
+                    {
+                        statusTeam.text = "status: Fire warrior stunned";
+                    }else
+                    {
+                        statusTeam.text = "status: Fire warrior supressed";
+                        yield return new WaitForSeconds(3f);
+                        statusTeam.text = "status: Curse of suppression";
+                    }
+                }
+                else if (desabilitar >= 0.25 && desabilitar < 0.5)
                 {
-                    statusTeam.text = "status: Fire warrior supressed";
-                    yield return new WaitForSeconds(3f);
-                    statusTeam.text = "status: Curse of suppression";
+                    earthButton.interactable = false;
+                    if(interativo == true)
+                    {
+                        statusTeam.text = "status: Earth warrior stunned";
+                    }else
+                    {
+                        statusTeam.text = "status: Earth warrior supressed";
+                        yield return new WaitForSeconds(3f);
+                        statusTeam.text = "status: Curse of suppression";
+                    }
+
+                }else if (desabilitar >= 0.5 && desabilitar < 0.75)
+                {
+                    airButton.interactable = false;
+                    if(interativo == true)
+                    {
+                        statusTeam.text = "status: Air warrior stunned";
+                    }else
+                    {
+                        statusTeam.text = "status: Air warrior supressed";
+                        yield return new WaitForSeconds(3f);
+                        statusTeam.text = "status: Curse of suppression";
+                    }
+
+                }else if (desabilitar >= 0.75 && desabilitar < 1)
+                {
+                    waterButton.interactable = false;
+                    if(interativo == true)
+                    {
+                        statusTeam.text = "status: Water warrior stunned";
+                    }else
+                    {
+                        statusTeam.text = "status: Air warrior supressed";
+                        yield return new WaitForSeconds(3f);
+                        statusTeam.text = "status: Curse of suppression";
+                    }
                 }
             }
-            else if (desabilitar >= 0.25 && desabilitar < 0.5)
+        }
+        if(corrosion == true)
+        {
+            if(Random.value > (100 - corrosionChance)/100)
             {
-                earthButton.interactable = false;
-                if(interativo == true)
-                {
-                    statusTeam.text = "status: Earth warrior stunned";
-                }else
-                {
-                    statusTeam.text = "status: Earth warrior supressed";
-                    yield return new WaitForSeconds(3f);
-                    statusTeam.text = "status: Curse of suppression";
-                }
-
-            }else if (desabilitar >= 0.5 && desabilitar < 0.75)
-            {
-                airButton.interactable = false;
-                if(interativo == true)
-                {
-                    statusTeam.text = "status: Air warrior stunned";
-                }else
-                {
-                    statusTeam.text = "status: Air warrior supressed";
-                    yield return new WaitForSeconds(3f);
-                    statusTeam.text = "status: Curse of suppression";
-                }
-
-            }else if (desabilitar >= 0.75 && desabilitar < 1)
-            {
-                waterButton.interactable = false;
-                if(interativo == true)
-                {
-                    statusTeam.text = "status: Water warrior stunned";
-                }else
-                {
-                    statusTeam.text = "status: Air warrior supressed";
-                    yield return new WaitForSeconds(3f);
-                    statusTeam.text = "status: Curse of suppression";
-                }
+                turnsCorrosion = 4; // quantidade de turnos da corrosão
             }
-        }else
+        }
+        if(supression == true)
+        {
+            if(Random.value > (100 - supressionChance)/100)
+            {
+                interativo = false;
+                statusTeam.text = "status: Curse of suppression";
+            }
+        }
+        if(deathMark == true)
+        {
+            if(Random.value > (100 - deathMarkChance)/100 )
+            {
+                turnsToDeath = 5;
+                deathMark = false;
+                deathMarkOn = true;
+            }
+        }
+        if (deathMarkOn == true)
+        {
+            if(turnsToDeath == 0)
+            {
+                playerMorreu = teamUnit.takeDamage(9999);
+            }
+        }
+        else
         {
             statusTeam.text = "Status: Normal";
         }
 
-        if(Random.value > 0.85)
-        {
-            interativo = false;
-            statusTeam.text = "status: Curse of suppression";
-        }
+        
+        
         yield return new WaitForSeconds(2f);// regular baseado no tempo do som do ataque
 		
         // Codigo de multiplos ataques
@@ -453,24 +575,34 @@ public class BattleSystem : MonoBehaviour
 		//Resetando botões para poder serem ativados no próximo turno
 		attackUnion = 0;
 
+        if (turnsCorrosion != 0) // efeito da corrosão
+        {
+            turnsCorrosion--;
+            playerMorreu = teamUnit.takeDamage(5);
+        }
+
 		if (playerMorreu) 
 		{
 			state = battleState.lost;
             StartCoroutine (EndBattle());
             
         }
-        else if(multiplosAtaques <= 4.5f && playerMorreu == false)
+        else if(multiplosAtaques <= 4.1f && playerMorreu == false)
 		{
-            fase = "Player Turn";
+            faseText.text = "Player Turn";
             state = battleState.playerTurn;
 			fatorDeQueda = 0;
 
-        }else if(multiplosAtaques > 4.5f && playerMorreu == false)
+        }else if(multiplosAtaques > 4.1f && playerMorreu == false)
 		{
+            if(beserker == false)
+            {
+                fatorDeQueda++;
+            }
 			state = battleState.enemyTurn;
-			fatorDeQueda++;
 			StartCoroutine (EnemyTurn ());
 		}
+        
     }
 
 	IEnumerator EndBattle()
@@ -523,7 +655,9 @@ public class BattleSystem : MonoBehaviour
         {
             errorEffect.Play();
             yield return new WaitForSeconds(3f);//Ajustar ao tempo ao som do efeito
-            nomeDoAttack = "Escolha elementos";
+            attackText.text = "Escolha elementos";
+            yield return new WaitForSeconds (2.0f);
+            attackText.text = "";
         }
     }
 	public void OnFireButton()
