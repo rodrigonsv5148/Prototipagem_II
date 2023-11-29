@@ -19,5 +19,15 @@ public class Unit : MonoBehaviour
 			return false;
 		}
 	}
+	public bool heal (int hl)
+	{
+		atualHP += hl;
+
+		if (atualHP <= 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 
 }

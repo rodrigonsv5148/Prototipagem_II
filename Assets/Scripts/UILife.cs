@@ -14,8 +14,8 @@ public class UILife : MonoBehaviour
     }
     public void SetHud(Unit unit) 
     {
-		Hp.maxValue = unit.maxHP;
-		Hp.value = unit.atualHP;
+		  Hp.maxValue = unit.maxHP;
+		  Hp.value = unit.atualHP;
     }
 
 	public void setHP(int hp)

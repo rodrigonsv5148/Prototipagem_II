@@ -13,6 +13,7 @@ using TMPro;
 public enum battleState { start, playerTurn, enemyTurn, won, lost };
 public class BattleSystem : MonoBehaviour
 {
+    public string enemythings;
     public bool stun = true;
     public float stunChance = 30;
     public bool supression = false;// só funciona com stun habilitado
@@ -23,18 +24,45 @@ public class BattleSystem : MonoBehaviour
     public bool deathMark = true;
     private bool deathMarkOn = false;
     public float deathMarkChance = 9;
-    public int turnsToDeath = 0;
+    private int turnsToDeath = -1;
     public bool beserker = true;
     public bool criticAttack = true;
     public float criticAttackChance = 30;
     private int baseDamage = 0;
     public int criticFactor = 2;
 
-    //stunAlly
-    //Regen
-    //CorrosionAlly
-    //cut
-    //burn ally
+    public string playerthings;
+
+    public float stunAllyBaseChance = 10;
+    private bool stunned = false;
+    public bool geloStuna = true;
+    public bool terraStuna = true;
+    public bool magmaStuna = true;
+    public bool plantaStuna = true;
+    public bool purpleVoid = true;
+    public float purpleVoidChance = 10;
+    public float recoveryChanceBase = 10;
+    public int recoveryLifeBase = 10;
+    public bool geloRecupera = true;
+    public bool vaporRecupera = true;
+    public bool plantaRecupera = true;
+    public bool aguaRecupera = true;
+    public bool cut = true;
+    public int cutChance = 20;
+    private int baseDamagebc = 0;
+    public bool cutObsidian = true;
+    public bool cutIce = true;
+    public float corrosionChanceAlly = 20;
+    private int corrosionTime = 0;
+    public int timeOfCorrosion = 4;
+    public int corrosionDamageBase = 7;
+    public bool fireCorrosion = true;
+    public bool magmaCorrosion = true;
+    public bool vaporCorrosion = true;
+    public bool vulcanicGasCorrosion = true;
+    public bool acidRainCorrosion = true;
+    public bool salitreCorrosion = true;
+
 
     public GameObject playerFirePrefab;
     public GameObject playerEarthPrefab;
@@ -88,6 +116,8 @@ public class BattleSystem : MonoBehaviour
     private TMP_Text danoAttackText;
     public GameObject fase;
     private TMP_Text faseText;
+    public GameObject informations;
+    private TMP_Text informationsText;
 
     public GameObject fireAttackPrefab;
     public GameObject EarthAttackPrefab;
@@ -132,6 +162,7 @@ public class BattleSystem : MonoBehaviour
     public int danoAtkChuvaAcida = 10;
     public int danoAtkSalitre = 19;
     public int danoAtkEter = 30;
+    private int danoBaseEter = 30;
 
     public AudioSource somFireAtk;
     public AudioSource somEarthAtk;
@@ -170,6 +201,7 @@ public class BattleSystem : MonoBehaviour
         attackText = nomeDoAttack.GetComponent<TMP_Text>();
         danoAttackText = danoDoAttack.GetComponent<TMP_Text>();
         faseText = fase.GetComponent<TMP_Text>();
+        informationsText = informations.GetComponent<TMP_Text>();
     }
 
 	IEnumerator SetupBattle() 
@@ -203,6 +235,8 @@ public class BattleSystem : MonoBehaviour
 
 	IEnumerator PlayerAttack()
 	{
+        bool morreu;
+
         if (turnsToDeath != 0)
         {
             turnsToDeath--;
@@ -214,6 +248,14 @@ public class BattleSystem : MonoBehaviour
 		{
             // Para todas as magias, add animações, e arrumar tempos de duração (relação animação/som)
             case 1:
+                if(fireCorrosion)
+                {
+                    if (Random.value < (corrosionChanceAlly-5)/100)
+                    {
+                        corrosionTime = timeOfCorrosion;
+                        corrosionDamageBase += 3;
+                    } 
+                }
 				magia = danoAtkFogo;
                 Attack = Instantiate(fireAttackPrefab, spawnAttackLocation1);
                 Animator animator = Attack.GetComponent<Animator>();
@@ -232,6 +274,14 @@ public class BattleSystem : MonoBehaviour
                 Attack = Instantiate(EarthAttackPrefab, spawnAttackLocation1);
                 //Animator animator = Attack.GetComponent<Animator>();
                 //animator.Play("FireAttack");
+                if(terraStuna)
+                {
+                    if (Random.value > (100 - stunAllyBaseChance)/100)
+                    {
+                        stunned = true;
+                        informationsText.text = "Enemy Stunned";
+                    }
+                }
                 somEarthAtk.Play();
                 tempoDeAnimacao = 2.0f;// Configurar quando botar animação
                 danoAttackText.text = magia.ToString();
@@ -260,6 +310,14 @@ public class BattleSystem : MonoBehaviour
                 Attack = Instantiate(waterAttackPrefab, spawnAttackLocation1);//Talvez configurar dependendo de onde venha o ataque, se ele cair no inimigo
                 //Animator animator = Attack.GetComponent<Animator>();
                 //animator.Play("FireAttack");
+                if (aguaRecupera)
+                {
+                    if(Random.value > (100 - recoveryChanceBase)/100)
+                    {
+                        informationsText.text = "Recovery";
+                        teamUnit.heal(recoveryLifeBase);
+                    }
+                }
                 somWaterAtk.Play();
                 tempoDeAnimacao = 2.0f;// Configurar quando botar animação
                 danoAttackText.text = magia.ToString();
@@ -270,11 +328,29 @@ public class BattleSystem : MonoBehaviour
                 break;
 			//--------------------------------
 			case 3:
+                if(magmaCorrosion)
+                {
+                    
+                    if (Random.value < (corrosionChanceAlly+5)/100)
+                    {
+                        corrosionTime = timeOfCorrosion - 2;
+                        corrosionDamageBase += 6;
+                    }
+                    
+                }                
 				magia = danoAtkMagma;
                 Attack = Instantiate(magmaAttackPrefab, spawnAttackLocation1);//Talvez configurar dependendo de onde venha o ataque, se ele cair no inimigo
                 //Animator animator = Attack.GetComponent<Animator>();
                 //animator.Play("FireAttack");
                 somMagmaAtk.Play();
+                if(magmaStuna)
+                {
+                    if (Random.value > (100 - stunAllyBaseChance * 2)/100)
+                    {
+                        stunned = true;
+                        informationsText.text = "Enemy Stunned";
+                    }
+                }
                 tempoDeAnimacao = 2.0f;// Configurar quando botar animação
                 danoAttackText.text = magia.ToString();
                 attackText.text = "Magma";
@@ -296,6 +372,22 @@ public class BattleSystem : MonoBehaviour
                 attackText.text = "";
                 break;
 			case 9:
+                if(vaporCorrosion)
+                {
+                    if (Random.value < (corrosionChanceAlly+5)/100)
+                    {
+                        corrosionTime = timeOfCorrosion - 2;
+                        corrosionDamageBase += 4;
+                    }
+                }    
+                if(vaporRecupera)
+                {
+                    if(Random.value > (100 - recoveryChanceBase/1.5)/100)
+                    {
+                        informationsText.text = "Recovery";
+                        teamUnit.heal(recoveryLifeBase * 3);
+                    }
+                }
 				magia = danoAtkVapor;
                 Attack = Instantiate(vaporAttackPrefab, spawnAttackLocation1);//Talvez configurar dependendo de onde venha o ataque, se ele cair no inimigo
                 //Animator animator = Attack.GetComponent<Animator>();
@@ -327,6 +419,22 @@ public class BattleSystem : MonoBehaviour
                 //Animator animator = Attack.GetComponent<Animator>();
                 //animator.Play("FireAttack");
                 somPlantAtk.Play();
+                if (plantaRecupera)
+                {
+                    if(Random.value > (100 - recoveryChanceBase)/100)
+                    {
+                        informationsText.text = "Recovery";
+                        teamUnit.heal(recoveryLifeBase/2);
+                    }
+                }
+                if(plantaStuna)
+                {
+                    if (Random.value > (100 - stunAllyBaseChance * 3)/100)
+                    {
+                        stunned = true;
+                        informationsText.text = "Enemy Stunned";
+                    }
+                }
                 tempoDeAnimacao = 2.0f;// Configurar quando botar animação
                 danoAttackText.text = magia.ToString();
                 attackText.text = "Planta";
@@ -340,6 +448,34 @@ public class BattleSystem : MonoBehaviour
                 //Animator animator = Attack.GetComponent<Animator>();
                 //animator.Play("FireAttack");
                 somIceAtk.Play();
+                if (cut)
+                {
+                    if (cutIce)
+                    {
+                        if (Random.value < cutChance/100)
+                        {
+                            baseDamagebc = danoAtkGelo * 2;
+                            magia = baseDamagebc;
+                            informationsText.text = "enemy cut";
+                        }
+                    }
+                }
+                if(geloRecupera)
+                {
+                    if(Random.value > (100 - recoveryChanceBase/2)/100)
+                    {
+                        informationsText.text = "Recovery";
+                        teamUnit.heal(recoveryLifeBase/2);
+                    }
+                }
+                if(geloStuna)
+                {
+                    if (Random.value > (100 - stunAllyBaseChance)/100)
+                    {
+                        stunned = true;
+                        informationsText.text = "Enemy Stunned";
+                    }
+                }
                 tempoDeAnimacao = 2.0f;// Configurar quando botar animação
                 danoAttackText.text = magia.ToString();
                 attackText.text = "Gelo";
@@ -349,6 +485,14 @@ public class BattleSystem : MonoBehaviour
                 break;
             //------------------------------
             case 7:
+                if(vulcanicGasCorrosion)
+                {
+                    if (Random.value < (corrosionChanceAlly)/100)
+                    {
+                        corrosionTime = timeOfCorrosion;
+                        corrosionDamageBase += 2;
+                    } 
+                }
 				magia = danoAtkGasVucanico;
                 Attack = Instantiate(gasVulcanicoAttackPrefab, spawnAttackLocation1);//Talvez configurar dependendo de onde venha o ataque, se ele cair no inimigo
                 //Animator animator = Attack.GetComponent<Animator>();
@@ -363,6 +507,18 @@ public class BattleSystem : MonoBehaviour
                 break;
 			case 11:
 				magia = danoAtkObsidiana;
+                if (cut)
+                {
+                    if (cutObsidian)
+                    {
+                        if (Random.value < cutChance/100)
+                        {
+                            baseDamagebc = danoAtkObsidiana * 3;
+                            magia = baseDamagebc;
+                            informationsText.text = "enemy cut";
+                        }
+                    }
+                }
                 Attack = Instantiate(obsidianaAttackPrefab, spawnAttackLocation1);//Talvez configurar dependendo de onde venha o ataque, se ele cair no inimigo
                 //Animator animator = Attack.GetComponent<Animator>();
                 //animator.Play("FireAttack");
@@ -375,6 +531,14 @@ public class BattleSystem : MonoBehaviour
                 attackText.text = "";
                 break;
 			case 13:
+                if(acidRainCorrosion)
+                {
+                    if (Random.value < (corrosionChanceAlly)/100)
+                    {
+                        corrosionTime = timeOfCorrosion;
+                        corrosionDamageBase += 13;
+                    } 
+                }
 				magia = danoAtkChuvaAcida;
                 Attack = Instantiate(chuvaAcidaAttackPrefab, spawnAttackLocation1);//Talvez configurar dependendo de onde venha o ataque, se ele cair no inimigo
                 //Animator animator = Attack.GetComponent<Animator>();
@@ -388,6 +552,14 @@ public class BattleSystem : MonoBehaviour
                 attackText.text = "";
                 break;
 			case 14:
+                if(salitreCorrosion)
+                {
+                    if (Random.value < (corrosionChanceAlly)/100)
+                    {
+                        corrosionTime = timeOfCorrosion;
+                        corrosionDamageBase += 5;
+                    } 
+                }
 				magia = danoAtkSalitre;
                 Attack = Instantiate(salitreAttackPrefab, spawnAttackLocation1);//Talvez configurar dependendo de onde venha o ataque, se ele cair no inimigo
                 //Animator animator = Attack.GetComponent<Animator>();
@@ -402,6 +574,15 @@ public class BattleSystem : MonoBehaviour
                 break;
 			//----------------------------
 			case 15:
+                if(purpleVoid)
+                {
+                    if (Random.value > (100 - purpleVoidChance)/100)
+                    {
+                        danoBaseEter = danoAtkEter;
+                        danoAtkEter = 99999;
+                        informationsText.text = "Purple Void";
+                    }
+                }
 				magia = danoAtkEter;
                 Attack = Instantiate(eterAttackPrefab, spawnAttackLocation1);//Talvez configurar dependendo de onde venha o ataque, se ele cair no inimigo
                 //Animator animator = Attack.GetComponent<Animator>();
@@ -416,7 +597,17 @@ public class BattleSystem : MonoBehaviour
                 break;
 		}
 
-		bool morreu = enemyUnit.takeDamage (magia);
+        if (corrosionTime != 0)
+        {
+            magia += corrosionDamageBase;
+            corrosionTime--;
+            morreu = enemyUnit.takeDamage (magia);
+
+        }else
+        {
+            morreu = enemyUnit.takeDamage (magia);
+        }
+		
 
 		yield return new WaitForSeconds (tempoDeAnimacao + 0.5f);
 
@@ -425,12 +616,22 @@ public class BattleSystem : MonoBehaviour
 		enemyLife.setHP (enemyUnit.atualHP);
 
 		if (morreu) {
+            informationsText.text = "";
 			state = battleState.won;
             StartCoroutine (EndBattle());
-		} else {
-			state = battleState.enemyTurn;
+		} else if (morreu == false && stunned == false){
+            informationsText.text = "";
+			danoAtkEter = danoBaseEter;
+            state = battleState.enemyTurn;
 			StartCoroutine (EnemyTurn ());
-		}
+		}else if (morreu == false && stunned == true)
+        {
+            informationsText.text = "";
+            stunned = false;
+            state = battleState.playerTurn;
+            StartCoroutine (PlayerAttack());
+            
+        }
 	}
 
 	IEnumerator EnemyTurn() 
@@ -458,7 +659,7 @@ public class BattleSystem : MonoBehaviour
 		print("besta Ataca");
         enemyAttack.Play();
         playerLife.setHP(teamUnit.atualHP);
-
+        
         if(criticAttack == true)
         {
             enemyUnit.damageBase = baseDamage;
@@ -554,10 +755,10 @@ public class BattleSystem : MonoBehaviour
                 playerMorreu = teamUnit.takeDamage(9999);
             }
         }
-        else
+        /*else
         {
             statusTeam.text = "Status: Normal";
-        }
+        }*/
 
         
         
