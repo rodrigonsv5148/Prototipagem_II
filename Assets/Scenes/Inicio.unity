@@ -511,7 +511,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5bbc948101eec7b48899fd7baf86262c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nextScene: Juan
+  nextScene: Level_1_Boss
 --- !u!1 &1323519373
 GameObject:
   m_ObjectHideFlags: 0

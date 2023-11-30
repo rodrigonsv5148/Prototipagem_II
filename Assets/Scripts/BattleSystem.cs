@@ -1,11 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
-//using Unity.VisualScripting;
+using Unity.VisualScripting;
 using UnityEngine;
 using static UnityEngine.UI.CanvasScaler;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-using UnityEditor.SearchService;
 using TMPro;
 
 //Adicionar chance do boss cancelar o uso de um botão.
@@ -13,6 +12,7 @@ using TMPro;
 public enum battleState { start, playerTurn, enemyTurn, won, lost };
 public class BattleSystem : MonoBehaviour
 {
+    public string Scene;	
     public string enemythings;
     public bool stun = true;
     public float stunChance = 30;
@@ -816,7 +816,7 @@ public class BattleSystem : MonoBehaviour
             yield return new WaitForSeconds(1f);
             winText.SetActive (true);// Podemos trocar o texto por uma imagem;
             yield return new WaitForSeconds(3f);//Ajustar os 3 yield ao tempo ao som de vitória
-            SceneManager.LoadScene("Menu");
+            SceneManager.LoadScene(Scene);
             print("ganhei");
 		} else //O que acontece se perder?
 		{
@@ -829,7 +829,7 @@ public class BattleSystem : MonoBehaviour
             yield return new WaitForSeconds(1f);
             looseText.SetActive (true);// Podemos trocar o texto por uma imagem;
             yield return new WaitForSeconds(3f);//Ajustar os 3 yield ao tempo ao som de vitória
-            SceneManager.LoadScene("Menu");
+            SceneManager.LoadScene(Scene);
             print("no ceu tem pao?");
 		}
 	}
