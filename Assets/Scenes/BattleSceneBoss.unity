@@ -332,6 +332,7 @@ MonoBehaviour:
   vulcanicGasCorrosion: 1
   acidRainCorrosion: 1
   salitreCorrosion: 1
+  attackButtonUI: {fileID: 1415456970}
   playerFirePrefab: {fileID: 880781868613523058, guid: 2f0d47ea1ac337b4e9f0e18a0249fa7e, type: 3}
   playerEarthPrefab: {fileID: 629724346489554630, guid: 8b0d46886e038dc4a8e6b643f29dd5a2, type: 3}
   playerAirPrefab: {fileID: 501352430509325364, guid: dbcc85f8a65c6f24283de9be90b564c0, type: 3}
@@ -5994,7 +5995,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1417076497
 RectTransform:
   m_ObjectHideFlags: 0

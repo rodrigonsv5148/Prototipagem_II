@@ -63,6 +63,7 @@ public class BattleSystem : MonoBehaviour
     public bool acidRainCorrosion = true;
     public bool salitreCorrosion = true;
 
+    public Button attackButtonUI;
 
     public GameObject playerFirePrefab;
     public GameObject playerEarthPrefab;
@@ -78,6 +79,11 @@ public class BattleSystem : MonoBehaviour
     public Transform enemyLocation;
 
     public battleState state;
+
+    bool fireWarrior = false;
+    bool earthWarrior = false;
+    bool airWarrior = false;
+    bool waterWarrior = false;
 
     Unit playerFireUnit;
     Unit playerEarthUnit;
@@ -236,7 +242,6 @@ public class BattleSystem : MonoBehaviour
 	IEnumerator PlayerAttack()
 	{
         bool morreu;
-
         if (turnsToDeath != 0)
         {
             turnsToDeath--;
@@ -679,6 +684,7 @@ public class BattleSystem : MonoBehaviour
                     }else
                     {
                         statusTeam.text = "status: Fire warrior supressed";
+                        fireWarrior = true;
                         yield return new WaitForSeconds(3f);
                         statusTeam.text = "status: Curse of suppression";
                     }
@@ -692,6 +698,7 @@ public class BattleSystem : MonoBehaviour
                     }else
                     {
                         statusTeam.text = "status: Earth warrior supressed";
+                        earthWarrior = true;
                         yield return new WaitForSeconds(3f);
                         statusTeam.text = "status: Curse of suppression";
                     }
@@ -705,6 +712,7 @@ public class BattleSystem : MonoBehaviour
                     }else
                     {
                         statusTeam.text = "status: Air warrior supressed";
+                        airWarrior = true;
                         yield return new WaitForSeconds(3f);
                         statusTeam.text = "status: Curse of suppression";
                     }
@@ -718,10 +726,15 @@ public class BattleSystem : MonoBehaviour
                     }else
                     {
                         statusTeam.text = "status: Air warrior supressed";
+                        waterWarrior = true;
                         yield return new WaitForSeconds(3f);
                         statusTeam.text = "status: Curse of suppression";
                     }
                 }
+            }
+            if(fireWarrior == true && earthWarrior == true && airWarrior == true && waterWarrior == true) 
+            {
+                teamUnit.takeDamage(9999);
             }
         }
         if(corrosion == true)
@@ -760,8 +773,6 @@ public class BattleSystem : MonoBehaviour
             statusTeam.text = "Status: Normal";
         }*/
 
-        
-        
         yield return new WaitForSeconds(2f);// regular baseado no tempo do som do ataque
 		
         // Codigo de multiplos ataques
@@ -793,8 +804,10 @@ public class BattleSystem : MonoBehaviour
             faseText.text = "Player Turn";
             state = battleState.playerTurn;
 			fatorDeQueda = 0;
+            attackButtonUI.interactable = true;
 
-        }else if(multiplosAtaques > 4.1f && playerMorreu == false)
+        }
+        else if(multiplosAtaques > 4.1f && playerMorreu == false)
 		{
             if(beserker == false)
             {
@@ -838,12 +851,14 @@ public class BattleSystem : MonoBehaviour
 
 	public void OnAttackButton ()
 	{
+        attackButtonUI.interactable = false;
         StartCoroutine(attackButton());
 	}
     IEnumerator attackButton ()
     {
         if(attackUnion > 0) 
         {
+            
             prepareMagicEffect.Play();
             yield return new WaitForSeconds(3f);//Ajustar ao tempo ao som do efeito
             if (state != battleState.playerTurn)
