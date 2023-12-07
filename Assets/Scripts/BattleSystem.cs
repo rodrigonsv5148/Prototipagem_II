@@ -265,11 +265,11 @@ public class BattleSystem : MonoBehaviour
                 Attack = Instantiate(fireAttackPrefab, spawnAttackLocation1);
                 Animator animator = Attack.GetComponent<Animator>();
                 animator.Play("FireAttack");
-                tempoDeAnimacao = 2.0f;
+                tempoDeAnimacao = 0.5f;
                 somFireAtk.Play();
                 danoAttackText.text = magia.ToString();
                 attackText.text = "Fogo";
-                yield return new WaitForSeconds (2.0f);
+                yield return new WaitForSeconds (0.5f);
                 danoAttackText.text = "";
                 attackText.text = "";
                 break;
@@ -288,10 +288,10 @@ public class BattleSystem : MonoBehaviour
                     }
                 }
                 somEarthAtk.Play();
-                tempoDeAnimacao = 2.0f;// Configurar quando botar animação
+                tempoDeAnimacao = 0.5f;// Configurar quando botar animação
                 danoAttackText.text = magia.ToString();
                 attackText.text = "Terra";
-                yield return new WaitForSeconds (2.0f);
+                yield return new WaitForSeconds (0.5f);
                 danoAttackText.text = "";
                 attackText.text = "";
                 break;
@@ -302,10 +302,10 @@ public class BattleSystem : MonoBehaviour
                 //Animator animator = Attack.GetComponent<Animator>();
                 //animator.Play("FireAttack");
                 somAirAtk.Play();
-                tempoDeAnimacao = 2.0f;// Configurar quando botar animação
+                tempoDeAnimacao = 0.5f;// Configurar quando botar animação
                 danoAttackText.text = magia.ToString();
                 attackText.text = "Ar";
-                yield return new WaitForSeconds (2.0f);
+                yield return new WaitForSeconds (0.5f);
                 danoAttackText.text = "";
                 attackText.text = "";
                 break;
@@ -324,10 +324,11 @@ public class BattleSystem : MonoBehaviour
                     }
                 }
                 somWaterAtk.Play();
-                tempoDeAnimacao = 2.0f;// Configurar quando botar animação
+                tempoDeAnimacao = 0.5f;// Configurar quando botar animação
                 danoAttackText.text = magia.ToString();
                 attackText.text = "Agua";
-                yield return new WaitForSeconds (2.0f);
+                yield return new WaitForSeconds (1.0f);
+                somWaterAtk.Stop();
                 danoAttackText.text = "";
                 attackText.text = "";
                 break;
@@ -356,10 +357,11 @@ public class BattleSystem : MonoBehaviour
                         informationsText.text = "Enemy Stunned";
                     }
                 }
-                tempoDeAnimacao = 2.0f;// Configurar quando botar animação
+                tempoDeAnimacao = 0.5f;// Configurar quando botar animação
                 danoAttackText.text = magia.ToString();
                 attackText.text = "Magma";
-                yield return new WaitForSeconds (2.0f);
+                yield return new WaitForSeconds (1.0f);
+                somMagmaAtk.Stop();
                 danoAttackText.text = "";
                 attackText.text = "";
                 break;
@@ -369,10 +371,11 @@ public class BattleSystem : MonoBehaviour
                 //Animator animator = Attack.GetComponent<Animator>();
                 //animator.Play("FireAttack");
                 somSmokeAtk.Play();
-                tempoDeAnimacao = 2.0f;// Configurar quando botar animação
+                tempoDeAnimacao = 0.5f;// Configurar quando botar animação
                 danoAttackText.text = magia.ToString();
                 attackText.text = "Fumaça";
-                yield return new WaitForSeconds (2.0f);
+                yield return new WaitForSeconds (1.0f);
+                somSmokeAtk.Stop();
                 danoAttackText.text = "";
                 attackText.text = "";
                 break;
@@ -398,10 +401,11 @@ public class BattleSystem : MonoBehaviour
                 //Animator animator = Attack.GetComponent<Animator>();
                 //animator.Play("FireAttack");
                 somVaporAtk.Play();
-                tempoDeAnimacao = 2.0f;// Configurar quando botar animação
+                tempoDeAnimacao = 0.5f;// Configurar quando botar animação
                 danoAttackText.text = magia.ToString();
                 attackText.text = "Vapor";
-                yield return new WaitForSeconds (2.0f);
+                yield return new WaitForSeconds (1.0f);
+                somVaporAtk.Stop();
                 danoAttackText.text = "";
                 attackText.text = "";
                 break;
@@ -411,10 +415,11 @@ public class BattleSystem : MonoBehaviour
                 //Animator animator = Attack.GetComponent<Animator>();
                 //animator.Play("FireAttack");
                 somSandAtk.Play();
-                tempoDeAnimacao = 2.0f;// Configurar quando botar animação
+                tempoDeAnimacao = 0.5f;// Configurar quando botar animação
                 danoAttackText.text = magia.ToString();
                 attackText.text = "Areia";
-                yield return new WaitForSeconds (2.0f);
+                yield return new WaitForSeconds (1.0f);
+                somSandAtk.Stop();
                 danoAttackText.text = "";
                 attackText.text = "";
                 break;
@@ -440,10 +445,11 @@ public class BattleSystem : MonoBehaviour
                         informationsText.text = "Enemy Stunned";
                     }
                 }
-                tempoDeAnimacao = 2.0f;// Configurar quando botar animação
+                tempoDeAnimacao = 0.5f;// Configurar quando botar animação
                 danoAttackText.text = magia.ToString();
                 attackText.text = "Planta";
-                yield return new WaitForSeconds (2.0f);
+                yield return new WaitForSeconds (1.0f);
+                somPlantAtk.Stop();
                 danoAttackText.text = "";
                 attackText.text = "";
                 break;
