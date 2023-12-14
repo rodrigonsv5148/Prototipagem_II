@@ -15,23 +15,41 @@ EditorBuildSettings:
     path: Assets/Scenes/Level_1_Boss.unity
     guid: 2cda990e2423bbf4892e6590ba056729
   - enabled: 1
+    path: Assets/Scenes/TutorialAir.unity
+    guid: 26d3eba4411be8c4083565f8dcc97a6a
+  - enabled: 1
+    path: Assets/Scenes/TutorialEarth.unity
+    guid: a862a08becbeaf1479e54ee18c2715a1
+  - enabled: 1
+    path: Assets/Scenes/TutorialFire.unity
+    guid: cc8af8c7ec432464d8ce38ef6d942492
+  - enabled: 1
+    path: Assets/Scenes/TutorialWater.unity
+    guid: ae95ca3bde87d8a4196e6bba43b40b73
+  - enabled: 1
+    path: Assets/Scenes/BattleSceneEnemty1.unity
+    guid: 8b5d067929ef1db43822633ef6628033
+  - enabled: 1
     path: Assets/Scenes/Level_1.unity
     guid: 7043f582c086ed547a068e4d65abc8ba
-  - enabled: 1
-    path: Assets/Scenes/BattleSceneBoss.unity
-    guid: 9eea9238e8e0d5044ac63f9f185fb43e
-  - enabled: 1
-    path: Assets/Scenes/Level_2.unity
-    guid: 316925d6e7d00e54ab90a1fa1e817a1d
   - enabled: 1
     path: Assets/Scenes/Level_2-Boss.unity
     guid: b7d5edc653986174984747c1d4170d3d
   - enabled: 1
-    path: Assets/Scenes/Level_3.unity
-    guid: 24fc5bd11aefd50428f3b0e67b015447
+    path: Assets/Scenes/BattleSceneEnemty2.unity
+    guid: 376d98f41e265e44cbd585886e666124
+  - enabled: 1
+    path: Assets/Scenes/Level_2.unity
+    guid: 316925d6e7d00e54ab90a1fa1e817a1d
   - enabled: 1
     path: Assets/Scenes/Level_3_Boss.unity
     guid: 27b69fbe1522334498a316ab27621824
+  - enabled: 1
+    path: Assets/Scenes/BattleSceneBoss.unity
+    guid: 9eea9238e8e0d5044ac63f9f185fb43e
+  - enabled: 1
+    path: Assets/Scenes/Level_3.unity
+    guid: 24fc5bd11aefd50428f3b0e67b015447
   - enabled: 1
     path: Assets/Scenes/Fim.unity
     guid: b822dba707265744d98e9c10061d754c

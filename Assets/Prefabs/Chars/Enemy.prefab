@@ -101,7 +101,7 @@ MonoBehaviour:
   unitName: Amalgama
   damageBase: 10
   maxHP: 300
-  atualHP: 227
+  atualHP: 300
 --- !u!95 &1629939423433593343
 Animator:
   serializedVersion: 4

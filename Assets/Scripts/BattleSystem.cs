@@ -12,8 +12,10 @@ using TMPro;
 public enum battleState { start, playerTurn, enemyTurn, won, lost };
 public class BattleSystem : MonoBehaviour
 {
-    public string Scene;	
+    public string Scene;
+    public string SceneDeath;	
     public string enemythings;
+    public bool enemyFight = true;
     public bool stun = true;
     public float stunChance = 30;
     public bool supression = false;// só funciona com stun habilitado
@@ -210,6 +212,17 @@ public class BattleSystem : MonoBehaviour
         informationsText = informations.GetComponent<TMP_Text>();
     }
 
+    void Update()
+    {
+         if (enemyFight == false)
+         {
+            if(Input.GetKeyDown(KeyCode.Escape))
+            {
+                SceneManager.LoadScene(Scene);
+            }
+         }
+    }
+
 	IEnumerator SetupBattle() 
     {
         GameObject fireMage = Instantiate(playerFirePrefab, mage1Location);
@@ -265,11 +278,12 @@ public class BattleSystem : MonoBehaviour
                 Attack = Instantiate(fireAttackPrefab, spawnAttackLocation1);
                 Animator animator = Attack.GetComponent<Animator>();
                 animator.Play("FireAttack");
-                tempoDeAnimacao = 0.5f;
+                tempoDeAnimacao = 2.0f;
                 somFireAtk.Play();
                 danoAttackText.text = magia.ToString();
                 attackText.text = "Fogo";
-                yield return new WaitForSeconds (0.5f);
+                yield return new WaitForSeconds (tempoDeAnimacao);
+                somFireAtk.Stop();
                 danoAttackText.text = "";
                 attackText.text = "";
                 break;
@@ -288,10 +302,11 @@ public class BattleSystem : MonoBehaviour
                     }
                 }
                 somEarthAtk.Play();
-                tempoDeAnimacao = 0.5f;// Configurar quando botar animação
+                tempoDeAnimacao = 2.0f;// Configurar quando botar animação
                 danoAttackText.text = magia.ToString();
                 attackText.text = "Terra";
-                yield return new WaitForSeconds (0.5f);
+                yield return new WaitForSeconds (tempoDeAnimacao);
+                somEarthAtk.Stop();
                 danoAttackText.text = "";
                 attackText.text = "";
                 break;
@@ -302,10 +317,11 @@ public class BattleSystem : MonoBehaviour
                 //Animator animator = Attack.GetComponent<Animator>();
                 //animator.Play("FireAttack");
                 somAirAtk.Play();
-                tempoDeAnimacao = 0.5f;// Configurar quando botar animação
+                tempoDeAnimacao = 2.0f;// Configurar quando botar animação
                 danoAttackText.text = magia.ToString();
                 attackText.text = "Ar";
-                yield return new WaitForSeconds (0.5f);
+                yield return new WaitForSeconds (tempoDeAnimacao);
+                somAirAtk.Stop();
                 danoAttackText.text = "";
                 attackText.text = "";
                 break;
@@ -324,10 +340,10 @@ public class BattleSystem : MonoBehaviour
                     }
                 }
                 somWaterAtk.Play();
-                tempoDeAnimacao = 0.5f;// Configurar quando botar animação
+                tempoDeAnimacao = 2.0f;// Configurar quando botar animação
                 danoAttackText.text = magia.ToString();
                 attackText.text = "Agua";
-                yield return new WaitForSeconds (1.0f);
+                yield return new WaitForSeconds (tempoDeAnimacao);
                 somWaterAtk.Stop();
                 danoAttackText.text = "";
                 attackText.text = "";
@@ -357,10 +373,10 @@ public class BattleSystem : MonoBehaviour
                         informationsText.text = "Enemy Stunned";
                     }
                 }
-                tempoDeAnimacao = 0.5f;// Configurar quando botar animação
+                tempoDeAnimacao = 2.0f;// Configurar quando botar animação
                 danoAttackText.text = magia.ToString();
                 attackText.text = "Magma";
-                yield return new WaitForSeconds (1.0f);
+                yield return new WaitForSeconds (tempoDeAnimacao);
                 somMagmaAtk.Stop();
                 danoAttackText.text = "";
                 attackText.text = "";
@@ -371,10 +387,10 @@ public class BattleSystem : MonoBehaviour
                 //Animator animator = Attack.GetComponent<Animator>();
                 //animator.Play("FireAttack");
                 somSmokeAtk.Play();
-                tempoDeAnimacao = 0.5f;// Configurar quando botar animação
+                tempoDeAnimacao = 2.0f;// Configurar quando botar animação
                 danoAttackText.text = magia.ToString();
                 attackText.text = "Fumaça";
-                yield return new WaitForSeconds (1.0f);
+                yield return new WaitForSeconds (tempoDeAnimacao);
                 somSmokeAtk.Stop();
                 danoAttackText.text = "";
                 attackText.text = "";
@@ -401,10 +417,10 @@ public class BattleSystem : MonoBehaviour
                 //Animator animator = Attack.GetComponent<Animator>();
                 //animator.Play("FireAttack");
                 somVaporAtk.Play();
-                tempoDeAnimacao = 0.5f;// Configurar quando botar animação
+                tempoDeAnimacao = 2.0f;// Configurar quando botar animação
                 danoAttackText.text = magia.ToString();
                 attackText.text = "Vapor";
-                yield return new WaitForSeconds (1.0f);
+                yield return new WaitForSeconds (tempoDeAnimacao);
                 somVaporAtk.Stop();
                 danoAttackText.text = "";
                 attackText.text = "";
@@ -415,10 +431,10 @@ public class BattleSystem : MonoBehaviour
                 //Animator animator = Attack.GetComponent<Animator>();
                 //animator.Play("FireAttack");
                 somSandAtk.Play();
-                tempoDeAnimacao = 0.5f;// Configurar quando botar animação
+                tempoDeAnimacao = 2.0f;// Configurar quando botar animação
                 danoAttackText.text = magia.ToString();
                 attackText.text = "Areia";
-                yield return new WaitForSeconds (1.0f);
+                yield return new WaitForSeconds (tempoDeAnimacao);
                 somSandAtk.Stop();
                 danoAttackText.text = "";
                 attackText.text = "";
@@ -445,10 +461,10 @@ public class BattleSystem : MonoBehaviour
                         informationsText.text = "Enemy Stunned";
                     }
                 }
-                tempoDeAnimacao = 0.5f;// Configurar quando botar animação
+                tempoDeAnimacao = 2.0f;// Configurar quando botar animação
                 danoAttackText.text = magia.ToString();
                 attackText.text = "Planta";
-                yield return new WaitForSeconds (1.0f);
+                yield return new WaitForSeconds (tempoDeAnimacao);
                 somPlantAtk.Stop();
                 danoAttackText.text = "";
                 attackText.text = "";
@@ -490,7 +506,8 @@ public class BattleSystem : MonoBehaviour
                 tempoDeAnimacao = 2.0f;// Configurar quando botar animação
                 danoAttackText.text = magia.ToString();
                 attackText.text = "Gelo";
-                yield return new WaitForSeconds (2.0f);
+                yield return new WaitForSeconds (tempoDeAnimacao);
+                somIceAtk.Stop();
                 danoAttackText.text = "";
                 attackText.text = "";
                 break;
@@ -512,7 +529,8 @@ public class BattleSystem : MonoBehaviour
                 tempoDeAnimacao = 2.0f;// Configurar quando botar animação
                 danoAttackText.text = magia.ToString();
                 attackText.text = "Gás Vulcânico (Que é toxico)";
-                yield return new WaitForSeconds (2.0f);
+                yield return new WaitForSeconds (tempoDeAnimacao);
+                somVulcanicGasAtk.Stop();
                 danoAttackText.text = "";
                 attackText.text = "";
                 break;
@@ -537,7 +555,8 @@ public class BattleSystem : MonoBehaviour
                 tempoDeAnimacao = 2.0f;// Configurar quando botar animação
                 danoAttackText.text = magia.ToString();
                 attackText.text = "Obsidiana";
-                yield return new WaitForSeconds (2.0f);
+                yield return new WaitForSeconds (tempoDeAnimacao);
+                somObsidianAtk.Stop();
                 danoAttackText.text = "";
                 attackText.text = "";
                 break;
@@ -558,7 +577,8 @@ public class BattleSystem : MonoBehaviour
                 tempoDeAnimacao = 2.0f;// Configurar quando botar animação
                 danoAttackText.text = magia.ToString();
                 attackText.text = "Chuva ácida";
-                yield return new WaitForSeconds (2.0f);
+                yield return new WaitForSeconds (tempoDeAnimacao);
+                somAcidRainAtk.Play();
                 danoAttackText.text = "";
                 attackText.text = "";
                 break;
@@ -579,7 +599,8 @@ public class BattleSystem : MonoBehaviour
                 tempoDeAnimacao = 2.0f;// Configurar quando botar animação
                 danoAttackText.text = magia.ToString();
                 attackText.text = "Salitre";
-                yield return new WaitForSeconds (2.0f);
+                yield return new WaitForSeconds (tempoDeAnimacao);
+                somSalitreAtk.Stop();
                 danoAttackText.text = "";
                 attackText.text = "";
                 break;
@@ -602,7 +623,8 @@ public class BattleSystem : MonoBehaviour
                 tempoDeAnimacao = 2.0f;// Configurar quando botar animação
                 danoAttackText.text = magia.ToString();
                 attackText.text = "Éter";
-                yield return new WaitForSeconds (2.0f);
+                yield return new WaitForSeconds (tempoDeAnimacao);
+                somEterAtk.Play();
                 danoAttackText.text = "";
                 attackText.text = "";
                 break;
@@ -620,7 +642,7 @@ public class BattleSystem : MonoBehaviour
         }
 		
 
-		yield return new WaitForSeconds (tempoDeAnimacao + 0.5f);
+		//yield return new WaitForSeconds (tempoDeAnimacao + 0.5f);
 
         Destroy(Attack);
 		
@@ -658,6 +680,8 @@ public class BattleSystem : MonoBehaviour
         
         faseText.text = "Enemy Turn";
         yield return new WaitForSeconds(1f);
+    if (enemyFight)
+    {
         if(criticAttack == true)
         {
             baseDamage = enemyUnit.damageBase;
@@ -822,6 +846,17 @@ public class BattleSystem : MonoBehaviour
 			state = battleState.enemyTurn;
 			StartCoroutine (EnemyTurn ());
 		}
+        }
+        else 
+        {
+            fireButton.isOn = false;
+		    earthButton.isOn = false;
+		    airButton.isOn = false;
+		    waterButton.isOn = false;
+            faseText.text = "Player Turn";
+            state = battleState.playerTurn;
+            attackButtonUI.interactable = true;
+        }
         
     }
 
@@ -848,7 +883,7 @@ public class BattleSystem : MonoBehaviour
             yield return new WaitForSeconds(1f);
             looseText.SetActive (true);// Podemos trocar o texto por uma imagem;
             yield return new WaitForSeconds(3f);//Ajustar os 3 yield ao tempo ao som de vitória
-            SceneManager.LoadScene(Scene);
+            SceneManager.LoadScene(SceneDeath);
             print("no ceu tem pao?");
 		}
 	}
